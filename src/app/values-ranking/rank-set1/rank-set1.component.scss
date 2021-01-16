@@ -1,0 +1,151 @@
+.containter {
+  //   padding: 100px;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: flex-start;
+}
+
+.header {
+  height: 10vh;
+  width: 100vw;
+  margin: auto;
+  background-color: lightcyan;
+  padding: 10px;
+}
+
+.values-container {
+  height: 90vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+}
+
+.stock-container {
+  height: 90vh;
+  width: 55vw;
+  background-color: rgb(228, 204, 241);
+}
+
+.stock-table {
+  height: 90vh;
+  width: 55vw;
+}
+
+.stock-row {
+  height: 29vh;
+  width: 55vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.stock-cell {
+  height: 29vh;
+  width: 13.5vw;
+  padding: 5px;
+}
+
+.stock-card {
+  height: 27vh;
+  width: 12.5vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.stock-img {
+  height: 18vh;
+  width: 11vw;
+}
+
+.pyramid-container {
+  height: 90vh;
+  width: 45vw;
+  background-color: skyblue;
+}
+
+.pyramid-table {
+  height: 90vh;
+  width: 45vw;
+}
+
+.pyramid-row {
+  height: 16vh;
+  width: 45vw;
+  min-height: max-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.pyramid-cell {
+  height: 16vh;
+  width: 11vw;
+  padding: 5px;
+}
+
+.pyramid-square {
+  overflow: hidden;
+  background: lightgray;
+  width: 10.5vw;
+  height: 15vh;
+  outline: 4px solid black;
+  padding: 3px;
+}
+
+.pyramid-cell-data {
+  width: 10.5vw;
+  height: 14.5vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.pyramid-img {
+  max-width: 8vw;
+  max-height: 11vh;
+}
+
+.pyramid-text {
+  height: 11.5vh;
+}
+
+.button-cell {
+  height: 16vh;
+  width: 17vw;
+  display: flex;
+  flex-direction: row;
+  align-content: flex-end;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.button-cell2 {
+  height: 16vh;
+  width: 17vw;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-end;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.accept-button {
+  width: 55vw;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
