@@ -1,12 +1,17 @@
 <div class="menu">
     <div class="button-box">
-        <button mat-raised-button color="primary" [routerLink]="['/values-ranking']">
-            משימה 1
+        <button mat-raised-button color="primary" [routerLink]="['/values-ranking']" [queryParams]="{ culture: 'jewish'}">
+            Jewish
         </button>
     </div>
     <div class="button-box">
-        <button mat-raised-button color="primary" [routerLink]="['/stickers']">
-            משימה 2
+        <button mat-raised-button color="primary" [routerLink]="['/values-ranking']" [queryParams]="{ culture: 'christian'}">
+            Christian
+        </button>
+    </div>
+    <div class="button-box">
+        <button mat-raised-button color="primary" [routerLink]="['/values-ranking']" [queryParams]="{ culture: 'druze'}">
+            Druze
         </button>
     </div>
 </div>

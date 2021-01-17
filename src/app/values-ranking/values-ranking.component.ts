@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Credentials } from '../models';
 import { DataService } from '../shared/services/data.service';
 
@@ -18,13 +19,23 @@ export class ValuesRankingComponent implements OnInit {
    * 5 - rank values set 2
    * 6 - summary
    */
-
-  scene = 1;
+  culture = 'jewish';
+  scene = 0;
   creds: Credentials;
 
-  constructor(private dataService: DataService, private http: HttpClient) {}
+  constructor(
+    private dataService: DataService,
+    private http: HttpClient,
+    private route: ActivatedRoute
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      
+      this.culture = ['jewish', 'druze', 'christian'].includes(params.culture) ? params.culture : 'jewish';
+      console.log(this.culture);
+    });
+  }
 
   scene1(creds: Credentials) {
     this.dataService.schoolID = creds.schoolID;
@@ -120,9 +131,13 @@ export class ValuesRankingComponent implements OnInit {
     const headers = { 'X-Hasura-Role': 'app' };
     console.log('Data summary:', finalData);
     this.http
-      .post<any>('https://research-tasks-multi-lang.hasura.app/v1/graphql', reqBody, {
-        headers,
-      })
+      .post<any>(
+        'https://research-tasks-multi-lang.hasura.app/v1/graphql',
+        reqBody,
+        {
+          headers,
+        }
+      )
       .subscribe({
         next: (data) => {
           if (!!data.data?.insert_values_ranking_one) {
