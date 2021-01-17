@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Credentials } from '../models';
+import { ApplicationStateService } from '../shared/services/application-state.service';
 import { DataService } from '../shared/services/data.service';
 
 @Component({
@@ -26,14 +27,18 @@ export class ValuesRankingComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private http: HttpClient,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public applicationStateService: ApplicationStateService
   ) {}
 
   ngOnInit(): void {
+    this.scene = this.applicationStateService.getIsMobileResolution() ? 0 : 1;
     this.route.queryParams.subscribe((params) => {
-      
-      this.culture = ['jewish', 'druze', 'christian'].includes(params.culture) ? params.culture : 'jewish';
-      console.log(this.culture);
+      this.culture = ['jewish', 'druze', 'christian', 'muslim'].includes(
+        params.culture
+      )
+        ? params.culture
+        : 'jewish';
     });
   }
 
