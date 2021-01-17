@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
-import { StickersComponent } from './stickers/stickers.component';
 import { ValuesRankingComponent } from './values-ranking/values-ranking.component';
 import { MenuComponent } from './menu/menu.component';
 import { ValuesSet1Component } from './values-ranking/values-set1/values-set1.component';
@@ -19,7 +18,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
-    StickersComponent,
     ValuesRankingComponent,
     MenuComponent,
     ValuesSet1Component,
