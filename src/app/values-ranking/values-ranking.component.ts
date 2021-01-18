@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Credentials } from '../models';
 import { ApplicationStateService } from '../shared/services/application-state.service';
@@ -23,6 +23,7 @@ export class ValuesRankingComponent implements OnInit {
   culture = 'jewish';
   scene = 0;
   creds: Credentials;
+  isLandscape: boolean = false;
 
   constructor(
     private dataService: DataService,
@@ -31,8 +32,27 @@ export class ValuesRankingComponent implements OnInit {
     public applicationStateService: ApplicationStateService
   ) {}
 
+  @HostListener('window:orientationchange', ['$event'])
+  onOrientationChange(event) {
+    setTimeout(() => {
+      this.isLandscape = window.innerWidth >= window.innerHeight;
+      if (this.scene === 0 && this.isLandscape) {
+        this.scene = 1;
+      }
+      console.log(this.isLandscape ? 'landscape' : 'portrait');
+    }, 500);
+  }
+
   ngOnInit(): void {
     this.scene = this.applicationStateService.getIsMobileResolution() ? 0 : 1;
+    // rotate screen worning. resolves on rotate or 10 sec delay
+    if (this.scene === 0) {
+      setTimeout(() => {
+        console.log(this.scene);
+        this.scene = 1;
+        console.log(this.scene);
+      }, 10000);
+    }
     this.route.queryParams.subscribe((params) => {
       this.culture = ['jewish', 'druze', 'christian', 'muslim'].includes(
         params.culture
