@@ -141,7 +141,7 @@
                         <div class="button-cell2">
                             <button mat-raised-button color="warn" (click)="stepback()"
                                 [disabled]="calculating || stage < 2">
-                                צעד אחורה
+                                {{culture === 'jewish' ? 'צעד אחורה' : 'للرجوع للخلف'}}
                             </button>
                         </div>
                     </td>
@@ -152,7 +152,7 @@
             <div class="accept-button" *ngIf="stage>=10">
                 <button mat-raised-button color="primary" (click)="this.gotRanking.emit(true);">
                     <h1>
-                        אני מרוצה
+                        {{culture === 'jewish' ? 'אני מרוצה' : 'استمر'}}
                     </h1>
                 </button>
             </div>
