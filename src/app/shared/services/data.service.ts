@@ -190,6 +190,7 @@ export class DataService {
   }
 
   setCulture(culture: 'jewish' | 'druze' | 'christian' | 'muslim') {
+    this.pbvs8.imgLink = `val4${culture}.png`
     if (culture !== 'jewish') {
       this.pbvs1.text = (this.gender === 'M') ? 'أن أكون غنيًّا وقويًّا' : 'أن أكون غنيّةً وقويّة';
       this.pbvs1.audioLink = `${this.gender}/15.mp3`
