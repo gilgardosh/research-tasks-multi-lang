@@ -47,11 +47,17 @@ export class ValuesRankingComponent implements OnInit {
     this.scene = this.applicationStateService.getIsMobileResolution() ? 0 : 1;
     // rotate screen worning. resolves on rotate or 10 sec delay
     if (this.scene === 0) {
-      setTimeout(() => {
-        console.log(this.scene);
-        this.scene = 1;
-        console.log(this.scene);
-      }, 10000);
+      if (window.innerWidth >= window.innerHeight) {
+        if (this.scene === 0) {
+          this.scene = 1;
+        }
+      } else {
+        setTimeout(() => {
+          if (this.scene === 0) {
+            this.scene = 1;
+          }
+        }, 10000);
+      }
     }
     this.route.queryParams.subscribe((params) => {
       this.culture = ['jewish', 'druze', 'christian', 'muslim'].includes(
