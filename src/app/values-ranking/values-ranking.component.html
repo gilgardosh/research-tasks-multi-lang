@@ -3,7 +3,7 @@
     </app-rank-set1>
     <app-rank-set2 *ngIf="scene == 5" [culture]="culture" (gotRanking)=scene5($event)>
     </app-rank-set2>
-    <app-summary *ngIf="scene == 6"></app-summary>
+    <app-summary *ngIf="scene == 6" [culture]="culture"></app-summary>
     <div class="padding" *ngIf="[0, 1, 2, 4].includes(scene)">
         <app-rotate-screen *ngIf="scene == 0" [culture]="culture" (gotCreds)=scene1($event)></app-rotate-screen>
         <app-entering-form *ngIf="scene == 1" [culture]="culture" (gotCreds)=scene1($event)></app-entering-form>

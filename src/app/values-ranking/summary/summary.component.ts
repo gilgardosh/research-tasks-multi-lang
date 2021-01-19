@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AudioService } from 'src/app/shared/services/audio.service';
 import { DataService } from '../../shared/services/data.service';
 
@@ -8,22 +9,19 @@ import { DataService } from '../../shared/services/data.service';
   styleUrls: ['./summary.component.scss'],
 })
 export class SummaryComponent implements OnInit {
+  @Input() culture: string;
   @Input() data: any;
   very1: any = {};
   very2: any = {};
   not1: any = {};
   not2: any = {};
-  // veryImg1: string = '';
-  // veryImg2: string = '';
-  // notImg1: string = '';
-  // notImg2: string = '';
   randomView = true;
+  $audio: Subscription;
 
   constructor(
     private audioService: AudioService,
     public dataService: DataService
   ) {
-    this.randomView = Math.random() > 0.5;
     for (let i = 1; i <= 10; i++) {
       const curVal = this.dataService['pbvs' + i];
       if (curVal.rank === 5) {
@@ -43,8 +41,26 @@ export class SummaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.randomView = Math.random() > 0.5;
+    this.ending(1);
+  }
+
+  ending(subStage: number) {
     this.audioService.setAudio(
-      `../../assets/values-ranking/guidance_aud/end-${this.dataService.gender}.wav`
+      `../../assets/values-ranking/guidance_aud/${
+        this.culture === 'jewish' ? 'heb' : 'arab'
+      }/inst-${subStage}-${this.dataService.gender}-exit.${
+        this.culture === 'jewish' && subStage === 2 ? 'mpeg' : 'mp3'
+      }`
     );
+    setTimeout(() => {
+      this.$audio = this.audioService.getPlayerStatus().subscribe((res) => {
+        if (res === 'ended') {
+          this.$audio.unsubscribe();
+          subStage += 1;
+          this.ending(subStage);
+        }
+      });
+    }, 500);
   }
 }

@@ -8,30 +8,29 @@
 }
 
 .text-div {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-
   align-items: center;
-  padding: 10px;
-  height: 9vh;
 }
 
 .values-div {
-  padding: 10px;
-  height: 40vh;
+  padding: 1%;
+  flex: 5;
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
 .sum-card {
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  padding: 5px;
-  margin: 10px;
+  padding: 1%;
+  margin: 1%;
 }
 
 .sum-img {
