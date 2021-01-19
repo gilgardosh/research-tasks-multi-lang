@@ -70,9 +70,6 @@ export class ValuesSet1Component implements OnInit {
       } else {
         this.openingArabFemale(0);
       }
-      //   `سننطلق الآن في رحلة خيالية،<br>
-      // رحلة حول الأشياء المهمة بالنسبة لك في الحياة،<br>
-      // مثل: ما هي أهدافك؟ وكيف تريد أن تكون في المستقبل؟`;
     }
   }
 
