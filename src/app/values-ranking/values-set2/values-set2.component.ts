@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AudioService } from 'src/app/shared/services/audio.service';
 import { Pbvs, DataService } from '../../shared/services/data.service';
 
@@ -14,6 +15,7 @@ export class ValuesSet2Component implements OnInit {
   subtitle: string;
   imgLink: string = null;
   vs2Stage = 1;
+  $audio: Subscription;
   /**
    * vs2Stages:
    * 1 - opening
@@ -36,21 +38,33 @@ export class ValuesSet2Component implements OnInit {
 
   ngOnInit(): void {
     this.vs2Stage = 1;
-    this.subtitle = `כל הכבוד!<br>עכשיו נשחק שוב את המשחק עם תמונות אחרות.<br>נעבור על התמונות אחת - אחת`;
-    this.audioService.setAudio(
-      `../../assets/values-ranking/values_aud/opening2-${this.dataService.gender}.wav`
-    );
+    if (this.culture === 'jewish') {
+      this.subtitle = `כל הכבוד!<br>עכשיו נשחק שוב את המשחק עם תמונות אחרות.<br>נעבור על התמונות אחת - אחת`;
+      this.audioService.setAudio(
+        `../../assets/values-ranking/values_aud/opening2-${this.dataService.gender}.wav`
+      );
 
-    this.audioService.getTimeElapsed().subscribe((res) => {
-      this.opening(res);
-    });
+      this.audioService.getTimeElapsed().subscribe((res) => {
+        this.opening(res);
+      });
 
-    this.audioService.getPlayerStatus().subscribe((res) => {
-      if (res === 'ended') {
-        this.vs2Stage += 1;
-        this.introduceValues();
+      this.$audio = this.audioService.getPlayerStatus().subscribe((res) => {
+        if (res === 'ended') {
+          this.vs2Stage += 1;
+          this.introduceValues();
+        }
+      });
+    } else {
+      if (this.dataService.gender === 'M') {
+        this.openingArabMale(31);
+      } else {
+        this.openingArabFemale(31);
       }
-    });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.$audio.unsubscribe();
   }
 
   introduceValues() {
@@ -102,7 +116,9 @@ export class ValuesSet2Component implements OnInit {
     }
     this.imgLink = `../../assets/values-ranking/values_img/${curVal.imgLink}`;
     this.audioService.setAudio(
-      `../../assets/values-ranking/values_aud/${curVal.audioLink}`
+      `../../assets/values-ranking/values_aud/${
+        this.culture === 'jewish' ? 'heb' : 'arab'
+      }/${curVal.audioLink}`
     );
     this.subtitle = curVal.text;
     return 0;
@@ -126,5 +142,144 @@ export class ValuesSet2Component implements OnInit {
         break;
       }
     }
+  }
+
+  openingArabMale(subStage: number) {
+    switch (subStage) {
+      case 31: {
+        this.subtitle = `هيا بنا ننطلق في رحلة خيالية أخرى، فيها صور جديدة.
+        هيا نمر على الصور صورةً صورة.`;
+        break;
+      }
+      case 32: {
+        this.imgLink = '../../assets/values-ranking/values_img/kid.png';
+        this.subtitle =
+          'تخيل مرة أخرى أنك الطفل الذي في الصورة صاحب السترة الرمادية،';
+        break;
+      }
+      case 33: {
+        this.subtitle = 'وأنك الذي يفعل كل الأشياء التي في الصور';
+        break;
+      }
+      case 34: {
+        this.$audio = this.audioService.getPlayerStatus().subscribe((res) => {
+          if (res === 'ended') {
+            this.vs2Stage += 1;
+            this.introduceValuesArab();
+          }
+        });
+        return 0;
+      }
+    }
+    this.audioService.setAudio(
+      `../../assets/values-ranking/values_aud/arab/M/${subStage}.mp3`
+    );
+    setTimeout(() => {
+      this.$audio = this.audioService.getPlayerStatus().subscribe((res) => {
+        if (res === 'ended') {
+          this.$audio.unsubscribe();
+          subStage += 1;
+          this.openingArabFemale(subStage);
+        }
+      });
+    }, 500);
+  }
+
+  openingArabFemale(subStage: number) {
+    switch (subStage) {
+      case 31: {
+        this.subtitle = `هيا بنا ننطلق في رحلة خيالية أخرى، فيها صور جديدة.
+        هيا نمر على الصور صورةً صورة.`;
+        break;
+      }
+      case 32: {
+        this.imgLink = '../../assets/values-ranking/values_img/kid.png';
+        this.subtitle =
+          'مرة أخرى تخيلي أنكِ الفتاة التي في الصورة صاحبة السترة الرمادية.';
+        break;
+      }
+      case 33: {
+        this.subtitle = 'وأنك التي تفعل كل الأشياء التي في الصور.';
+        break;
+      }
+      case 34: {
+        this.$audio = this.audioService.getPlayerStatus().subscribe((res) => {
+          if (res === 'ended') {
+            this.vs2Stage += 1;
+            this.introduceValuesArab();
+          }
+        });
+        return 0;
+      }
+    }
+    this.audioService.setAudio(
+      `../../assets/values-ranking/values_aud/arab/F/${subStage}.mp3`
+    );
+    setTimeout(() => {
+      this.$audio = this.audioService.getPlayerStatus().subscribe((res) => {
+        if (res === 'ended') {
+          this.$audio.unsubscribe();
+          subStage += 1;
+          this.openingArabFemale(subStage);
+        }
+      });
+    }, 500);
+  }
+
+  introduceValuesArab() {
+    let curVal: Pbvs;
+    switch (this.vs2Stage) {
+      case 2: {
+        curVal = this.dataService.pbvs11;
+        break;
+      }
+      case 3: {
+        curVal = this.dataService.pbvs12;
+        break;
+      }
+      case 4: {
+        curVal = this.dataService.pbvs13;
+        break;
+      }
+      case 5: {
+        curVal = this.dataService.pbvs14;
+        break;
+      }
+      case 6: {
+        curVal = this.dataService.pbvs15;
+        break;
+      }
+      case 7: {
+        curVal = this.dataService.pbvs16;
+        break;
+      }
+      case 8: {
+        curVal = this.dataService.pbvs17;
+        break;
+      }
+      case 9: {
+        curVal = this.dataService.pbvs18;
+        break;
+      }
+      case 10: {
+        curVal = this.dataService.pbvs19;
+        break;
+      }
+      case 11: {
+        curVal = this.dataService.pbvs20;
+        break;
+      }
+      case 12: {
+        return 0;
+      }
+    }
+    this.imgLink = `../../assets/values-ranking/values_img/${curVal.imgLink}`;
+    this.audioService.setAudio(
+      `../../assets/values-ranking/values_aud/${
+        this.culture === 'jewish' ? 'heb' : 'arab'
+      }/${curVal.audioLink}`
+    );
+    this.subtitle = curVal.text;
+    return 0;
   }
 }

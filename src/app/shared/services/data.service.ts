@@ -211,17 +211,26 @@ export class DataService {
       this.pbvs9.audioLink = `${this.gender}/23.mp3`
       this.pbvs10.text = 'الصّداقة مع النّاس من كلّ الأنواع';
       this.pbvs10.audioLink = `${this.gender}/24.mp3`
-      this.pbvs19.audioLink = `${this.gender}/24.mp3`
-      this.pbvs11.text = (this.gender === 'M') ? '' : '';
-      this.pbvs12.text = (this.gender === 'M') ? '' : '';
-      this.pbvs13.text = (this.gender === 'M') ? '' : '';
-      this.pbvs14.text = (this.gender === 'M') ? '' : '';
-      this.pbvs15.text = (this.gender === 'M') ? '' : '';
-      this.pbvs16.text = (this.gender === 'M') ? '' : '';
-      this.pbvs17.text = (this.gender === 'M') ? '' : '';
-      this.pbvs18.text = (this.gender === 'M') ? '' : '';
-      this.pbvs19.text = (this.gender === 'M') ? '' : '';
-      this.pbvs20.text = (this.gender === 'M') ? '' : '';
+      this.pbvs11.text = 'قيادة المجموعة';
+      this.pbvs11.audioLink = `${this.gender}/34.mp3`
+      this.pbvs12.text = 'إظهار قدراتي للجميع';
+      this.pbvs12.audioLink = `${this.gender}/35.mp3`
+      this.pbvs13.text = 'قضاء الوقت الممتع';
+      this.pbvs13.audioLink = `${this.gender}/36.mp3`
+      this.pbvs14.text = 'القيام بالمغامرات';
+      this.pbvs14.audioLink = `${this.gender}/37.mp3`
+      this.pbvs15.text = 'استخدام الخيال';
+      this.pbvs15.audioLink = `${this.gender}/38.mp3`
+      this.pbvs16.text = 'العيش بأمن وأمان';
+      this.pbvs16.audioLink = `${this.gender}/39.mp3`
+      this.pbvs17.text = 'أن أكون مثل الآخرين';
+      this.pbvs17.audioLink = `${this.gender}/40.mp3`
+      this.pbvs18.text = 'معرفة ما حدث في الماضي';
+      this.pbvs18.audioLink = `${this.gender}/41.mp3`
+      this.pbvs19.text = 'إسعاد الآخرين';
+      this.pbvs19.audioLink = `${this.gender}/42.mp3`
+      this.pbvs20.text = 'المحافظة على البيئة';
+      this.pbvs20.audioLink = `${this.gender}/43.mp3`
     }
   }
 }
