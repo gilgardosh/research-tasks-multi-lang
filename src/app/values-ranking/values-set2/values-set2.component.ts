@@ -9,6 +9,7 @@ import { Pbvs, DataService } from '../../shared/services/data.service';
   providers: [AudioService],
 })
 export class ValuesSet2Component implements OnInit {
+  @Input() culture: string;
   @Output() openingEnded: EventEmitter<boolean> = new EventEmitter<boolean>();
   subtitle: string;
   imgLink: string = null;

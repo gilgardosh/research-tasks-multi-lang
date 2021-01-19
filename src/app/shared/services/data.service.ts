@@ -3,6 +3,7 @@ export class DataService {
   schoolID: string;
   childID: string;
   gender: 'M' | 'F' = 'M';
+  culture: 'jewish' | 'druze' | 'christian' | 'muslim' = 'jewish';
   pbvs1: Pbvs = {
     valNum: 3,
     text: '',
@@ -186,6 +187,42 @@ export class DataService {
     this.pbvs16.text =
       gender === 'M' ? 'להיות מוגן ובטוח' : 'להיות מוגנת ובטוחה';
     this.pbvs16.audioLink = `val18-${gender}.wav`;
+  }
+
+  setCulture(culture: 'jewish' | 'druze' | 'christian' | 'muslim') {
+    if (culture !== 'jewish') {
+      this.pbvs1.text = (this.gender === 'M') ? 'أن أكون غنيًّا وقويًّا' : 'أن أكون غنيّةً وقويّة';
+      this.pbvs1.audioLink = `${this.gender}/15.mp3`
+      this.pbvs2.text = 'التّفوّق على الآخرين';
+      this.pbvs2.audioLink = `${this.gender}/16.mp3`
+      this.pbvs3.text = 'الاستمتاع بالحياة';
+      this.pbvs3.audioLink = `${this.gender}/17.mp3`
+      this.pbvs4.text = 'عمل الأشياء المشوّقة';
+      this.pbvs4.audioLink = `${this.gender}/18.mp3`
+      this.pbvs5.text = 'اكتشاف الأشياء الجديدة وحدي';
+      this.pbvs5.audioLink = `${this.gender}/19.mp3`
+      this.pbvs6.text = 'المحافظة على سلامتي';
+      this.pbvs6.audioLink = `${this.gender}/20.mp3`
+      this.pbvs7.text = 'التزام القوانين';
+      this.pbvs7.audioLink = `${this.gender}/21.mp3`
+      this.pbvs8.text = 'الصّلاة لله';
+      this.pbvs8.audioLink = `${this.gender}/22.mp3`
+      this.pbvs9.text = 'مساعدة الآخرين';
+      this.pbvs9.audioLink = `${this.gender}/23.mp3`
+      this.pbvs10.text = 'الصّداقة مع النّاس من كلّ الأنواع';
+      this.pbvs10.audioLink = `${this.gender}/24.mp3`
+      this.pbvs19.audioLink = `${this.gender}/24.mp3`
+      this.pbvs11.text = (this.gender === 'M') ? '' : '';
+      this.pbvs12.text = (this.gender === 'M') ? '' : '';
+      this.pbvs13.text = (this.gender === 'M') ? '' : '';
+      this.pbvs14.text = (this.gender === 'M') ? '' : '';
+      this.pbvs15.text = (this.gender === 'M') ? '' : '';
+      this.pbvs16.text = (this.gender === 'M') ? '' : '';
+      this.pbvs17.text = (this.gender === 'M') ? '' : '';
+      this.pbvs18.text = (this.gender === 'M') ? '' : '';
+      this.pbvs19.text = (this.gender === 'M') ? '' : '';
+      this.pbvs20.text = (this.gender === 'M') ? '' : '';
+    }
   }
 }
 

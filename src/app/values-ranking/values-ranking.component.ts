@@ -20,7 +20,7 @@ export class ValuesRankingComponent implements OnInit {
    * 5 - rank values set 2
    * 6 - summary
    */
-  culture = 'jewish';
+  culture: 'jewish' | 'druze' | 'christian' | 'muslim' = 'jewish';
   scene = 0;
   creds: Credentials;
   isLandscape: boolean = false;
@@ -66,6 +66,7 @@ export class ValuesRankingComponent implements OnInit {
     this.dataService.schoolID = creds.schoolID;
     this.dataService.childID = creds.childID;
     this.dataService.setGender(creds.gender);
+    this.dataService.setCulture(this.culture);
     this.scene = 2;
   }
 

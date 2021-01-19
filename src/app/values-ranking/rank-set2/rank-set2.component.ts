@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Output,
@@ -16,6 +17,7 @@ import { Pbvs, DataService } from '../../shared/services/data.service';
   providers: [AudioService],
 })
 export class RankSet2Component implements OnInit, OnDestroy {
+  @Input() culture: string;
   @Output() gotRanking: EventEmitter<boolean> = new EventEmitter<boolean>();
   isMale = true;
   title: string;

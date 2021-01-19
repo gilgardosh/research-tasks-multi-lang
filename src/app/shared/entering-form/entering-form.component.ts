@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Credentials } from '../../models';
 
@@ -8,6 +8,7 @@ import { Credentials } from '../../models';
   styleUrls: ['./entering-form.component.scss'],
 })
 export class EnteringFormComponent implements OnInit {
+  @Input() culture: string;
   @Output() gotCreds: EventEmitter<Credentials> = new EventEmitter<
     Credentials
   >();
