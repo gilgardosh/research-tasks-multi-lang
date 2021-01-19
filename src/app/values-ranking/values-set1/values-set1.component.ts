@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AudioService } from 'src/app/shared/services/audio.service';
 import { Pbvs, DataService } from '../../shared/services/data.service';
 
@@ -9,10 +10,12 @@ import { Pbvs, DataService } from '../../shared/services/data.service';
   providers: [AudioService],
 })
 export class ValuesSet1Component implements OnInit {
+  @Input() culture: string;
   @Output() openingEnded: EventEmitter<boolean> = new EventEmitter<boolean>();
   subtitle: string;
   imgLink: string = null;
   stage = 1;
+  $audio: Subscription;
   /**
    * stages:
    * 1 - opening
@@ -35,32 +38,49 @@ export class ValuesSet1Component implements OnInit {
 
   ngOnInit(): void {
     this.stage = 1;
-    this.subtitle = `עכשיו אנחנו נצא למסע דמיוני -<br>
-    מסע בדברים החשובים לך בחיים,<br>
-    במטרות שלך ואיך תרצ${
-      this.dataService.gender === 'M' ? 'ה' : 'י'
-    } לחיות בעתיד`;
-    this.audioService.setAudio(
-      `../../assets/values-ranking/values_aud/opening1-${this.dataService.gender}.wav`
-    );
+    if (this.culture === 'jewish') {
+      this.subtitle = `עכשיו אנחנו נצא למסע דמיוני -<br>
+      מסע בדברים החשובים לך בחיים,<br>
+      במטרות שלך ואיך תרצ${
+        this.dataService.gender === 'M' ? 'ה' : 'י'
+      } לחיות בעתיד`;
+      this.audioService.setAudio(
+        `../../assets/values-ranking/values_aud/${
+          this.culture === 'jewish' ? 'heb' : 'arab'
+        }/opening1-${this.dataService.gender}.wav`
+      );
 
-    this.audioService.getTimeElapsed().subscribe((res) => {
+      this.audioService.getTimeElapsed().subscribe((res) => {
+        if (this.dataService.gender === 'M') {
+          this.openingHebMale(res);
+        } else {
+          this.openingHebFemale(res);
+        }
+      });
+
+      this.$audio = this.audioService.getPlayerStatus().subscribe((res) => {
+        if (res === 'ended') {
+          this.stage += 1;
+          this.introduceValuesHeb();
+        }
+      });
+    } else {
       if (this.dataService.gender === 'M') {
-        this.openingMale(res);
+        this.openingArabMale(0);
       } else {
-        this.openingFemale(res);
+        this.openingArabFemale(0);
       }
-    });
-
-    this.audioService.getPlayerStatus().subscribe((res) => {
-      if (res === 'ended') {
-        this.stage += 1;
-        this.introduceValues();
-      }
-    });
+      //   `سننطلق الآن في رحلة خيالية،<br>
+      // رحلة حول الأشياء المهمة بالنسبة لك في الحياة،<br>
+      // مثل: ما هي أهدافك؟ وكيف تريد أن تكون في المستقبل؟`;
+    }
   }
 
-  introduceValues() {
+  ngOnDestroy(): void {
+    this.$audio.unsubscribe();
+  }
+
+  introduceValuesHeb() {
     let curVal: Pbvs;
     switch (this.stage) {
       case 2: {
@@ -109,13 +129,72 @@ export class ValuesSet1Component implements OnInit {
     }
     this.imgLink = `../../assets/values-ranking/values_img/${curVal.imgLink}`;
     this.audioService.setAudio(
-      `../../assets/values-ranking/values_aud/${curVal.audioLink}`
+      `../../assets/values-ranking/values_aud/${
+        this.culture === 'jewish' ? 'heb' : 'arab'
+      }/${curVal.audioLink}`
     );
     this.subtitle = curVal.text;
     return 0;
   }
 
-  openingMale(time: string) {
+  introduceValuesArab() {
+    let curVal: Pbvs;
+    switch (this.stage) {
+      case 2: {
+        curVal = this.dataService.pbvs1;
+        break;
+      }
+      case 3: {
+        curVal = this.dataService.pbvs2;
+        break;
+      }
+      case 4: {
+        curVal = this.dataService.pbvs3;
+        break;
+      }
+      case 5: {
+        curVal = this.dataService.pbvs4;
+        break;
+      }
+      case 6: {
+        curVal = this.dataService.pbvs5;
+        break;
+      }
+      case 7: {
+        curVal = this.dataService.pbvs6;
+        break;
+      }
+      case 8: {
+        curVal = this.dataService.pbvs7;
+        break;
+      }
+      case 9: {
+        curVal = this.dataService.pbvs8;
+        break;
+      }
+      case 10: {
+        curVal = this.dataService.pbvs9;
+        break;
+      }
+      case 11: {
+        curVal = this.dataService.pbvs10;
+        break;
+      }
+      case 12: {
+        return 0;
+      }
+    }
+    this.imgLink = `../../assets/values-ranking/values_img/${curVal.imgLink}`;
+    this.audioService.setAudio(
+      `../../assets/values-ranking/values_aud/${
+        this.culture === 'jewish' ? 'heb' : 'arab'
+      }/${curVal.audioLink}`
+    );
+    this.subtitle = curVal.text;
+    return 0;
+  }
+
+  openingHebMale(time: string) {
     switch (time) {
       case '00:10': {
         this.imgLink = '../../assets/values-ranking/values_img/kid.png';
@@ -172,7 +251,7 @@ export class ValuesSet1Component implements OnInit {
     }
   }
 
-  openingFemale(time: string) {
+  openingHebFemale(time: string) {
     switch (time) {
       case '00:10': {
         this.imgLink = '../../assets/values-ranking/values_img/kid.png';
@@ -227,5 +306,189 @@ export class ValuesSet1Component implements OnInit {
         break;
       }
     }
+  }
+
+  openingArabMale(subStage: number) {
+    switch (subStage) {
+      case 0: {
+        this.subtitle = `سننطلق الآن في رحلة خيالية،<br>
+        رحلة حول الأشياء المهمة بالنسبة لك في الحياة،<br>
+        مثل: ما هي أهدافكِ؟ وكيف تريدين أن تكوني في المستقبل؟`;
+        break;
+      }
+      case 1: {
+        this.imgLink = '../../assets/values-ranking/values_img/kid.png';
+        this.subtitle =
+          'تخيل أن الفتى الذي في الصورة والذي يلبس القبعة المخططة واللباس الرمادي - تخيل أنه أنت.';
+        break;
+      }
+      case 2: {
+        this.subtitle = 'قد يصعب عليك أن تتخيل ذلك!';
+        break;
+      }
+      case 3: {
+        this.subtitle =
+          'من الممكن أنك لا تملك قبعة أو حتى ملابس رمادية كتلك التي في الصورة.';
+        break;
+      }
+      case 4: {
+        this.subtitle = 'ولكن هذا غير مهم';
+        break;
+      }
+      case 5: {
+        this.subtitle = 'ببساطة،حاول أن تتخيل أنه أنت!';
+        break;
+      }
+      case 6: {
+        this.subtitle = 'والآن، فكر في نفسك';
+        break;
+      }
+      case 7: {
+        this.subtitle = 'كيف تريد أن تكون عندما تكبر؟';
+        break;
+      }
+      case 8: {
+        this.subtitle = 'ما هي الأهداف التي تريد تحقيقها؟';
+        break;
+      }
+      case 9: {
+        this.subtitle =
+          'الآن سنشاهد معًا صورًا عديدة ومن الممكن أنك تريد أن تكون مثلها';
+        break;
+      }
+      case 10: {
+        this.subtitle = 'أنظر إلى الصور';
+        break;
+      }
+      case 11: {
+        this.subtitle =
+          'من الممكن أن تجد فيها الفتى الذي تريد أن تكون مثله';
+        break;
+      }
+      case 12: {
+        this.subtitle = 'هيا نمر على الصور، صورةً صورة';
+        break;
+      }
+      case 13: {
+        this.subtitle =
+          'يمكنك من الآن أن تفكر في الأشياء الأكثر أهمية لك في الحياة وفي الأشياء الأقل أهمية.';
+        break;
+      }
+      case 14: {
+        this.$audio = this.audioService.getPlayerStatus().subscribe((res) => {
+          if (res === 'ended') {
+            this.stage += 1;
+            this.introduceValuesArab();
+          }
+        });
+        return 0;
+      }
+    }
+    this.audioService.setAudio(
+      `../../assets/values-ranking/values_aud/arab/M/${subStage + 1}.mp3`
+    );
+    setTimeout(() => {
+      this.$audio = this.audioService
+        .getPlayerStatus()
+        .subscribe((res) => {
+          if (res === 'ended') {
+            this.$audio.unsubscribe();
+            subStage += 1;
+            this.openingArabFemale(subStage);
+          }
+        });
+    }, 500);
+  }
+
+  openingArabFemale(subStage: number) {
+    switch (subStage) {
+      case 0: {
+        this.subtitle = `سننطلق الآن في رحلة خيالية،<br>
+        رحلة حول الأشياء المهمة بالنسبة لك في الحياة،<br>
+        مثل: ما هي أهدافكِ؟ وكيف تريدين أن تكوني في المستقبل؟`;
+        break;
+      }
+      case 1: {
+        this.imgLink = '../../assets/values-ranking/values_img/kid.png';
+        this.subtitle =
+          'تخيلي أن الفتاة التي في الصورة والتي تَلْبَسْ القبعة المخططة واللباس الرمادي، تخيلي أنها أنت.';
+        break;
+      }
+      case 2: {
+        this.subtitle = 'قد يصعب عليكِ أن تتخيلي ذلك';
+        break;
+      }
+      case 3: {
+        this.subtitle =
+          'من الممكن أنك لا تملكين قبعة أو حتى ملابس رمادية كما تلك التي في الصورة.';
+        break;
+      }
+      case 4: {
+        this.subtitle = 'ولكن هذا غير مهم';
+        break;
+      }
+      case 5: {
+        this.subtitle = 'ببساطة،حاولي أن تتخيلي أنها أنت!';
+        break;
+      }
+      case 6: {
+        this.subtitle = 'والآن، فكّري في نفسك';
+        break;
+      }
+      case 7: {
+        this.subtitle = 'كيف تريدين أن تكوني عندما تكبرين؟';
+        break;
+      }
+      case 8: {
+        this.subtitle = 'ما هي الأهداف التي تريدين تحقيقها؟';
+        break;
+      }
+      case 9: {
+        this.subtitle =
+          'الآن سنشاهد معًا صورًا عديدة ومن الممكن أنك تريدين أن تكوني مثلها';
+        break;
+      }
+      case 10: {
+        this.subtitle = 'أنظري إلى الصور';
+        break;
+      }
+      case 11: {
+        this.subtitle =
+          'من الممكن أن تجدي فيها الفتاة التي تريدين أن تكوني مثلها';
+        break;
+      }
+      case 12: {
+        this.subtitle = 'هيا نمر على الصور، صورةً صورة';
+        break;
+      }
+      case 13: {
+        this.subtitle =
+          'يمكنك من الآن أن تفكري في الأشياء الأكثر أهمية لك في الحياة وفي الأشياء الأقل أهمية';
+        break;
+      }
+      case 14: {
+        this.$audio = this.audioService.getPlayerStatus().subscribe((res) => {
+          if (res === 'ended') {
+            this.stage += 1;
+            this.introduceValuesArab();
+          }
+        });
+        return 0;
+      }
+    }
+    this.audioService.setAudio(
+      `../../assets/values-ranking/values_aud/arab/F/${subStage + 1}.mp3`
+    );
+    setTimeout(() => {
+      this.$audio = this.audioService
+        .getPlayerStatus()
+        .subscribe((res) => {
+          if (res === 'ended') {
+            this.$audio.unsubscribe();
+            subStage += 1;
+            this.openingArabFemale(subStage);
+          }
+        });
+    }, 500);
   }
 }
