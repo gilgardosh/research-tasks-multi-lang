@@ -23,7 +23,8 @@ export class RankSet2Component implements OnInit, OnDestroy {
   title: string;
   stage = 1;
   calculating = false;
-  playerSubscription: Subscription;
+  playerSubscription$: Subscription;
+  idleTimer;
 
   orderedValues = {
     veryvery: null,
@@ -62,15 +63,15 @@ export class RankSet2Component implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.playerSubscription) {
-      this.playerSubscription.unsubscribe();
+    if (this.playerSubscription$) {
+      this.playerSubscription$.unsubscribe();
     }
   }
 
   stepback() {
     this.calculating = true;
-    if (this.playerSubscription) {
-      this.playerSubscription.unsubscribe();
+    if (this.playerSubscription$) {
+      this.playerSubscription$.unsubscribe();
     }
     this.audioService.pauseAudio();
     this.stage -= 1;
@@ -92,8 +93,8 @@ export class RankSet2Component implements OnInit, OnDestroy {
   valueClick(val: Pbvs) {
     if (!this.calculating) {
       this.calculating = true;
-      if (this.playerSubscription) {
-        this.playerSubscription.unsubscribe();
+      if (this.playerSubscription$) {
+        this.playerSubscription$.unsubscribe();
       }
       this.stage += 1;
       this.playSound();
@@ -104,7 +105,7 @@ export class RankSet2Component implements OnInit, OnDestroy {
         const subscription = this.audioService.getPlayerStatus();
         // inner delated func
         const stage7 = () => {
-          this.playerSubscription = subscription.subscribe((res) => {
+          this.playerSubscription$ = subscription.subscribe((res) => {
             if (res === 'ended') {
               for (let i = 11; i <= 20; i++) {
                 if (this.dataService['pbvs' + i].isStock) {
@@ -127,6 +128,7 @@ export class RankSet2Component implements OnInit, OnDestroy {
   }
 
   playSound() {
+    clearTimeout(this.idleTimer);
     const createSoundLink = (num: number): string => {
       return `../../assets/values-ranking/guidance_aud/${
         this.culture === 'jewish' ? 'heb' : 'arab'
@@ -136,8 +138,10 @@ export class RankSet2Component implements OnInit, OnDestroy {
       const titlesDict = [
         {
           arab: {
-            M: 'برأس الصفحة يمكنك أن ترى أنه مكتوب " مهم جدا “. اختر صورة واحدة هي الأكثر أهمية بالنسبة لك وكيف تود أن تكون في المستقبل. الآن اضغط على تلك الصورة',
-            F: 'برأس الصفحة يمكنكِ أن تري أنه مكتوب " مهم جدا “. اختاري صورة واحدة هي الأكثر أهمية بالنسبة لك وكيف تودين أن تكوني في المستقبل . الآن اضغطي على تلك الصورة',
+            M:
+              'برأس الصفحة يمكنك أن ترى أنه مكتوب " مهم جدا “. اختر صورة واحدة هي الأكثر أهمية بالنسبة لك وكيف تود أن تكون في المستقبل. الآن اضغط على تلك الصورة',
+            F:
+              'برأس الصفحة يمكنكِ أن تري أنه مكتوب " مهم جدا “. اختاري صورة واحدة هي الأكثر أهمية بالنسبة لك وكيف تودين أن تكوني في المستقبل . الآن اضغطي على تلك الصورة',
           },
           heb: {
             M:
@@ -148,8 +152,10 @@ export class RankSet2Component implements OnInit, OnDestroy {
         },
         {
           arab: {
-            M: 'بالتأكيد هنالك أمور وأشياء أخرى غير مهمة أبداً بالنسبة لك ، اختر صورة واحدة أبدا غير مهمة لك وليس لها علاقة بما تود أن تكون في المستقبل.',
-            F: 'بالتأكيد هناك أمور وأشياء أخرى غير مهمة أبداً بالنسبة لكِ. اختاري صورة واحدة أبدا غير مهمة لكِ وليس لها علاقة بما تودين أن تكوني في المستقبل.',
+            M:
+              'بالتأكيد هنالك أمور وأشياء أخرى غير مهمة أبداً بالنسبة لك ، اختر صورة واحدة أبدا غير مهمة لك وليس لها علاقة بما تود أن تكون في المستقبل.',
+            F:
+              'بالتأكيد هناك أمور وأشياء أخرى غير مهمة أبداً بالنسبة لكِ. اختاري صورة واحدة أبدا غير مهمة لكِ وليس لها علاقة بما تودين أن تكوني في المستقبل.',
           },
           heb: {
             M:
@@ -160,8 +166,10 @@ export class RankSet2Component implements OnInit, OnDestroy {
         },
         {
           arab: {
-            M: 'وصلنا الآن للسطر الثاني، بالتأكيد هنالك عدة أشياء تعتبر مهمة بالنسبة لك. اختر صورتين فيهما الأشياء المهمة لك.',
-            F: 'وصلنا الآن للسطر الثاني، بالتأكيد هناك عدة أشياء تعتبر مهمة بالنسبة لكِ. اختاري صورتين فيهما الأشياء المهمة لك.',
+            M:
+              'وصلنا الآن للسطر الثاني، بالتأكيد هنالك عدة أشياء تعتبر مهمة بالنسبة لك. اختر صورتين فيهما الأشياء المهمة لك.',
+            F:
+              'وصلنا الآن للسطر الثاني، بالتأكيد هناك عدة أشياء تعتبر مهمة بالنسبة لكِ. اختاري صورتين فيهما الأشياء المهمة لك.',
           },
           heb: {
             M:
@@ -172,8 +180,10 @@ export class RankSet2Component implements OnInit, OnDestroy {
         },
         {
           arab: {
-            M: 'الآن وصلنا للسطر قبل الأخير :  هذا السطر يتضمن الأشياء الغير مهمة بالنسبة لك  اختر صورتين لهذا السطر.',
-            F: 'الآن وصلنا للسطر قبل الأخير :  هذا السطر يتضمن الأشياء الغير مهمة بالنسبة لكِ  اختاري صورتين لهذا السطر.',
+            M:
+              'الآن وصلنا للسطر قبل الأخير :  هذا السطر يتضمن الأشياء الغير مهمة بالنسبة لك  اختر صورتين لهذا السطر.',
+            F:
+              'الآن وصلنا للسطر قبل الأخير :  هذا السطر يتضمن الأشياء الغير مهمة بالنسبة لكِ  اختاري صورتين لهذا السطر.',
           },
           heb: {
             M:
@@ -202,15 +212,54 @@ export class RankSet2Component implements OnInit, OnDestroy {
       case 1: {
         this.title = titles(1);
         this.audioService.setAudio(createSoundLink(1));
+        this.playerSubscription$ = this.audioService
+          .getPlayerStatus()
+          .subscribe((res) => {
+            clearTimeout(this.idleTimer);
+            if (res === 'ended') {
+              this.playerSubscription$.unsubscribe();
+              this.idleTimer = setTimeout(() => {
+                if (this.stage === 1) {
+                  this.playSound();
+                }
+              }, 7000);
+            }
+          });
         break;
       }
       case 2: {
         this.title = titles(2);
         this.audioService.setAudio(createSoundLink(2));
+        this.playerSubscription$ = this.audioService
+          .getPlayerStatus()
+          .subscribe((res) => {
+            clearTimeout(this.idleTimer);
+            if (res === 'ended') {
+              this.playerSubscription$.unsubscribe();
+              this.idleTimer = setTimeout(() => {
+                if (this.stage === 2) {
+                  this.playSound();
+                }
+              }, 7000);
+            }
+          });
         break;
       }
       case 3: {
         this.audioService.setAudio(createSoundLink(3));
+        this.playerSubscription$ = this.audioService
+          .getPlayerStatus()
+          .subscribe((res) => {
+            clearTimeout(this.idleTimer);
+            if (res === 'ended') {
+              this.playerSubscription$.unsubscribe();
+              this.idleTimer = setTimeout(() => {
+                if (this.stage === 3) {
+                  this.playSound();
+                }
+              }, 7000);
+            }
+          });
       }
       case 4: {
         this.title = titles(3);
@@ -218,6 +267,19 @@ export class RankSet2Component implements OnInit, OnDestroy {
       }
       case 5: {
         this.audioService.setAudio(createSoundLink(4));
+        this.playerSubscription$ = this.audioService
+          .getPlayerStatus()
+          .subscribe((res) => {
+            clearTimeout(this.idleTimer);
+            if (res === 'ended') {
+              this.playerSubscription$.unsubscribe();
+              this.idleTimer = setTimeout(() => {
+                if (this.stage === 4) {
+                  this.playSound();
+                }
+              }, 7000);
+            }
+          });
       }
       case 6: {
         this.title = titles(4);
@@ -226,6 +288,19 @@ export class RankSet2Component implements OnInit, OnDestroy {
       case 7: {
         this.title = titles(5);
         this.audioService.setAudio(createSoundLink(5));
+        this.playerSubscription$ = this.audioService
+          .getPlayerStatus()
+          .subscribe((res) => {
+            clearTimeout(this.idleTimer);
+            if (res === 'ended') {
+              this.playerSubscription$.unsubscribe();
+              this.idleTimer = setTimeout(() => {
+                if (this.stage === 5) {
+                  this.playSound();
+                }
+              }, 7000);
+            }
+          });
         break;
       }
       default: {

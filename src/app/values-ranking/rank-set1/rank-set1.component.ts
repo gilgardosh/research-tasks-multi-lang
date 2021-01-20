@@ -23,8 +23,9 @@ export class RankSet1Component implements OnInit, OnDestroy {
   title: string;
   stage = 1;
   calculating = false;
-  playerSubscription: Subscription;
-  playerworking: Subscription;
+  playerSubscription$: Subscription;
+  playerworking$: Subscription;
+  idleTimer;
 
   orderedValues = {
     veryvery: null,
@@ -60,7 +61,7 @@ export class RankSet1Component implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isMale = this.dataService.gender === 'M';
     this.playSound();
-    this.playerworking = this.audioService
+    this.playerworking$ = this.audioService
       .getPlayerStatus()
       .subscribe((res) => {
         if (res !== 'ended') {
@@ -72,8 +73,8 @@ export class RankSet1Component implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe(this.playerSubscription);
-    this.unsubscribe(this.playerworking);
+    this.unsubscribe(this.playerSubscription$);
+    this.unsubscribe(this.playerworking$);
   }
 
   unsubscribe(sub: Subscription) {
@@ -84,7 +85,7 @@ export class RankSet1Component implements OnInit, OnDestroy {
 
   stepback() {
     this.calculating = true;
-    this.unsubscribe(this.playerSubscription);
+    this.unsubscribe(this.playerSubscription$);
     this.audioService.pauseAudio();
     this.stage -= 1;
     while (this.stage >= 7) {
@@ -105,7 +106,7 @@ export class RankSet1Component implements OnInit, OnDestroy {
   valueClick(val: Pbvs) {
     if (!this.calculating) {
       this.calculating = true;
-      this.unsubscribe(this.playerSubscription);
+      this.unsubscribe(this.playerSubscription$);
       this.stage += 1;
       this.playSound();
       val.isStock = false;
@@ -115,7 +116,7 @@ export class RankSet1Component implements OnInit, OnDestroy {
         const subscription = this.audioService.getPlayerStatus();
         // inner delated func
         const stage7 = () => {
-          this.playerSubscription = subscription.subscribe((res) => {
+          this.playerSubscription$ = subscription.subscribe((res) => {
             if (res === 'ended') {
               for (let i = 1; i <= 10; i++) {
                 if (this.dataService['pbvs' + i].isStock) {
@@ -138,6 +139,7 @@ export class RankSet1Component implements OnInit, OnDestroy {
   }
 
   playSound() {
+    clearTimeout(this.idleTimer);
     const createSoundLink = (num: number): string => {
       return `../../assets/values-ranking/guidance_aud/${
         this.culture === 'jewish' ? 'heb' : 'arab'
@@ -220,15 +222,54 @@ export class RankSet1Component implements OnInit, OnDestroy {
       case 1: {
         this.title = titles(1);
         this.audioService.setAudio(createSoundLink(1));
+        this.playerSubscription$ = this.audioService
+          .getPlayerStatus()
+          .subscribe((res) => {
+            clearTimeout(this.idleTimer);
+            if (res === 'ended') {
+              this.playerSubscription$.unsubscribe();
+              this.idleTimer = setTimeout(() => {
+                if (this.stage === 1) {
+                  this.playSound();
+                }
+              }, 7000);
+            }
+          });
         break;
       }
       case 2: {
         this.title = titles(2);
         this.audioService.setAudio(createSoundLink(2));
+        this.playerSubscription$ = this.audioService
+          .getPlayerStatus()
+          .subscribe((res) => {
+            clearTimeout(this.idleTimer);
+            if (res === 'ended') {
+              this.playerSubscription$.unsubscribe();
+              this.idleTimer = setTimeout(() => {
+                if (this.stage === 2) {
+                  this.playSound();
+                }
+              }, 7000);
+            }
+          });
         break;
       }
       case 3: {
         this.audioService.setAudio(createSoundLink(3));
+        this.playerSubscription$ = this.audioService
+          .getPlayerStatus()
+          .subscribe((res) => {
+            clearTimeout(this.idleTimer);
+            if (res === 'ended') {
+              this.playerSubscription$.unsubscribe();
+              this.idleTimer = setTimeout(() => {
+                if (this.stage === 3) {
+                  this.playSound();
+                }
+              }, 7000);
+            }
+          });
       }
       case 4: {
         this.title = titles(3);
@@ -236,6 +277,19 @@ export class RankSet1Component implements OnInit, OnDestroy {
       }
       case 5: {
         this.audioService.setAudio(createSoundLink(4));
+        this.playerSubscription$ = this.audioService
+          .getPlayerStatus()
+          .subscribe((res) => {
+            clearTimeout(this.idleTimer);
+            if (res === 'ended') {
+              this.playerSubscription$.unsubscribe();
+              this.idleTimer = setTimeout(() => {
+                if (this.stage === 4) {
+                  this.playSound();
+                }
+              }, 7000);
+            }
+          });
       }
       case 6: {
         this.title = titles(4);
@@ -244,6 +298,19 @@ export class RankSet1Component implements OnInit, OnDestroy {
       case 7: {
         this.title = titles(5);
         this.audioService.setAudio(createSoundLink(5));
+        this.playerSubscription$ = this.audioService
+          .getPlayerStatus()
+          .subscribe((res) => {
+            clearTimeout(this.idleTimer);
+            if (res === 'ended') {
+              this.playerSubscription$.unsubscribe();
+              this.idleTimer = setTimeout(() => {
+                if (this.stage === 5) {
+                  this.playSound();
+                }
+              }, 7000);
+            }
+          });
         break;
       }
       default: {
