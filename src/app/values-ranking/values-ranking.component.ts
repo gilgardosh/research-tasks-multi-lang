@@ -39,7 +39,6 @@ export class ValuesRankingComponent implements OnInit {
       if (this.scene === 0 && this.isLandscape) {
         this.scene = 1;
       }
-      console.log(this.isLandscape ? 'landscape' : 'portrait');
     }, 500);
   }
 
