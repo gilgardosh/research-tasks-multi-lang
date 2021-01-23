@@ -5,10 +5,12 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AudioService } from 'src/app/shared/services/audio.service';
 import { Pbvs, DataService } from '../../shared/services/data.service';
+import { ValueDialogComponent } from '../value-dialog/value-dialog.component';
 
 @Component({
   selector: 'app-rank-set1',
@@ -17,6 +19,8 @@ import { Pbvs, DataService } from '../../shared/services/data.service';
   providers: [AudioService],
 })
 export class RankSet1Component implements OnInit, OnDestroy {
+  @ViewChild('valueDialog')
+  valueDialog: ValueDialogComponent;
   @Input() culture: string;
   @Output() gotRanking: EventEmitter<boolean> = new EventEmitter<boolean>();
   isMale = true;
@@ -60,21 +64,18 @@ export class RankSet1Component implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isMale = this.dataService.gender === 'M';
-    this.playSound();
-    this.playerworking$ = this.audioService
-      .getPlayerStatus()
-      .subscribe((res) => {
-        if (res !== 'ended') {
-          this.calculating = true;
-        } else {
-          this.calculating = false;
-        }
-      });
+    this.nextStage();
   }
 
   ngOnDestroy(): void {
     this.unsubscribe(this.playerSubscription$);
     this.unsubscribe(this.playerworking$);
+  }
+
+  nextStage() {
+    this.unsubscribe(this.playerSubscription$)
+    this.calculating = true;
+    this.playSound();
   }
 
   unsubscribe(sub: Subscription) {
@@ -84,7 +85,6 @@ export class RankSet1Component implements OnInit, OnDestroy {
   }
 
   stepback() {
-    this.calculating = true;
     this.unsubscribe(this.playerSubscription$);
     this.audioService.pauseAudio();
     this.stage -= 1;
@@ -100,41 +100,46 @@ export class RankSet1Component implements OnInit, OnDestroy {
       this.orderedValues[this.valuesStages[this.stage - 1]] = null;
       this.playSound();
     }
-    this.calculating = false;
   }
 
   valueClick(val: Pbvs) {
     if (!this.calculating) {
-      this.calculating = true;
+      clearTimeout(this.idleTimer);
       this.unsubscribe(this.playerSubscription$);
-      this.stage += 1;
-      this.playSound();
-      val.isStock = false;
-      this.orderedValues[this.valuesStages[this.stage - 2]] = val;
-      val.rank = this.getRank(this.valuesStages[this.stage - 2]);
-      if (this.stage >= 7) {
-        const subscription = this.audioService.getPlayerStatus();
-        // inner delated func
-        const stage7 = () => {
-          this.playerSubscription$ = subscription.subscribe((res) => {
-            if (res === 'ended') {
-              for (let i = 1; i <= 10; i++) {
-                if (this.dataService['pbvs' + i].isStock) {
-                  const value = this.dataService['pbvs' + i];
-                  this.stage += 1;
-                  value.isStock = false;
-                  value.rank = this.getRank(this.valuesStages[this.stage - 2]);
-                  this.orderedValues[this.valuesStages[this.stage - 2]] = value;
-                }
+      this.valueDialog.open(val);
+    }
+  }
+
+  valueConfirmed(val: Pbvs) {
+    console.log(val);
+    this.calculating = true;
+    this.stage += 1;
+    this.nextStage();
+    val.isStock = false;
+    this.orderedValues[this.valuesStages[this.stage - 2]] = val;
+    val.rank = this.getRank(this.valuesStages[this.stage - 2]);
+    if (this.stage >= 7) {
+      const subscription = this.audioService.getPlayerStatus();
+      // inner delated func
+      const stage7 = () => {
+        this.playerSubscription$ = subscription.subscribe((res) => {
+          if (res === 'ended') {
+            for (let i = 1; i <= 10; i++) {
+              if (this.dataService['pbvs' + i].isStock) {
+                const value = this.dataService['pbvs' + i];
+                this.stage += 1;
+                value.isStock = false;
+                value.rank = this.getRank(this.valuesStages[this.stage - 2]);
+                this.orderedValues[this.valuesStages[this.stage - 2]] = value;
               }
-              this.calculating = false;
             }
-          });
-        };
-        setTimeout(stage7, 1000);
-      } else {
-        this.calculating = false;
-      }
+            this.calculating = false;
+          }
+        });
+      };
+      setTimeout(stage7, 1000);
+    } else {
+      this.calculating = false;
     }
   }
 
@@ -227,6 +232,7 @@ export class RankSet1Component implements OnInit, OnDestroy {
           .subscribe((res) => {
             clearTimeout(this.idleTimer);
             if (res === 'ended') {
+              this.calculating = false;
               this.playerSubscription$.unsubscribe();
               this.idleTimer = setTimeout(() => {
                 if (this.stage === 1) {
@@ -245,6 +251,7 @@ export class RankSet1Component implements OnInit, OnDestroy {
           .subscribe((res) => {
             clearTimeout(this.idleTimer);
             if (res === 'ended') {
+              this.calculating = false;
               this.playerSubscription$.unsubscribe();
               this.idleTimer = setTimeout(() => {
                 if (this.stage === 2) {
@@ -262,6 +269,7 @@ export class RankSet1Component implements OnInit, OnDestroy {
           .subscribe((res) => {
             clearTimeout(this.idleTimer);
             if (res === 'ended') {
+              this.calculating = false;
               this.playerSubscription$.unsubscribe();
               this.idleTimer = setTimeout(() => {
                 if (this.stage === 3) {
@@ -282,6 +290,7 @@ export class RankSet1Component implements OnInit, OnDestroy {
           .subscribe((res) => {
             clearTimeout(this.idleTimer);
             if (res === 'ended') {
+              this.calculating = false;
               this.playerSubscription$.unsubscribe();
               this.idleTimer = setTimeout(() => {
                 if (this.stage === 4) {
@@ -303,6 +312,7 @@ export class RankSet1Component implements OnInit, OnDestroy {
           .subscribe((res) => {
             clearTimeout(this.idleTimer);
             if (res === 'ended') {
+              this.calculating = false;
               this.playerSubscription$.unsubscribe();
               this.idleTimer = setTimeout(() => {
                 if (this.stage === 5) {

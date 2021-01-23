@@ -1,4 +1,5 @@
 <div class="containter" *ngIf="stage<=11">
+    <app-value-dialog #valueDialog (clicked)="$event == null ? playSound() : valueConfirmed($event)"></app-value-dialog>
     <div class="values-container">
         <div class="pyramid-container">
             <table class="pyramid-table">
