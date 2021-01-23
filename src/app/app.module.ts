@@ -15,6 +15,7 @@ import { SummaryComponent } from './values-ranking/summary/summary.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ValueDialogComponent } from './values-ranking/value-dialog/value-dialog.component';
+import { PyramidViewComponent } from './values-ranking/pyramid-view/pyramid-view.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ValueDialogComponent } from './values-ranking/value-dialog/value-dialog
     RankSet2Component,
     SummaryComponent,
     ValueDialogComponent,
+    PyramidViewComponent,
   ],
   imports: [
     BrowserModule,
