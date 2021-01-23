@@ -1,5 +1,6 @@
 <div class="containter" *ngIf="stage<=11">
     <app-value-dialog #valueDialog (clicked)="$event == null ? playSound() : valueConfirmed($event)"></app-value-dialog>
+    <app-pyramid-view #pyramidView [setValues]="orderedValues" [culture]="culture" (clicked)="$event ? nextScene() : stepback()" ></app-pyramid-view>
     <div class="values-container">
         <div class="pyramid-container">
             <table class="pyramid-table">
@@ -150,13 +151,13 @@
             </table>
         </div>
         <div class="stock-container">
-            <div class="accept-button" *ngIf="stage>=10">
+            <!-- <div class="accept-button" *ngIf="stage>=10">
                 <button mat-raised-button color="primary" (click)="this.gotRanking.emit(true);">
                     <h1>
                         {{culture === 'jewish' ? 'אני מרוצה' : this.isMale ? 'استمر' : 'استمري'}}
                     </h1>
                 </button>
-            </div>
+            </div> -->
             <table class="stock-table" *ngIf="stage<10">
                 <tr class="stock-row">
                     <td class="stock-cell">

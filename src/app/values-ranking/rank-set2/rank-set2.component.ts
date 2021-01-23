@@ -10,6 +10,7 @@ import {
 import { Subscription } from 'rxjs/internal/Subscription';
 import { AudioService } from 'src/app/shared/services/audio.service';
 import { Pbvs, DataService } from '../../shared/services/data.service';
+import { PyramidViewComponent } from '../pyramid-view/pyramid-view.component';
 import { ValueDialogComponent } from '../value-dialog/value-dialog.component';
 
 @Component({
@@ -21,6 +22,8 @@ import { ValueDialogComponent } from '../value-dialog/value-dialog.component';
 export class RankSet2Component implements OnInit, OnDestroy {
   @ViewChild('valueDialog')
   valueDialog: ValueDialogComponent;
+  @ViewChild('pyramidView')
+  pyramidView: PyramidViewComponent;
   @Input() culture: string;
   @Output() gotRanking: EventEmitter<boolean> = new EventEmitter<boolean>();
   isMale = true;
@@ -135,6 +138,7 @@ export class RankSet2Component implements OnInit, OnDestroy {
               }
             }
             this.calculating = false;
+            this.pyramidView.open(this.orderedValues);
           }
         });
       };
@@ -360,5 +364,9 @@ export class RankSet2Component implements OnInit, OnDestroy {
 
   getImgLink(num: number) {
     return `../../assets/values-ranking/values_img/val${num}.png`;
+  }
+
+  nextScene() {
+    this.gotRanking.emit(true);
   }
 }
