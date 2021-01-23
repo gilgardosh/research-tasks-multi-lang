@@ -14,6 +14,7 @@ import { RankSet2Component } from './values-ranking/rank-set2/rank-set2.componen
 import { SummaryComponent } from './values-ranking/summary/summary.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ValueDialogComponent } from './values-ranking/value-dialog/value-dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ValuesSet2Component,
     RankSet2Component,
     SummaryComponent,
+    ValueDialogComponent,
   ],
   imports: [
     BrowserModule,
