@@ -391,7 +391,7 @@ export class ValuesSet1Component implements OnInit {
           if (res === 'ended') {
             this.$audio.unsubscribe();
             subStage += 1;
-            this.openingArabFemale(subStage);
+            this.openingArabMale(subStage);
           }
         });
     }, 500);
