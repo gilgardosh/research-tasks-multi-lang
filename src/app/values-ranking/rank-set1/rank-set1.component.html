@@ -152,7 +152,7 @@
             <div class="accept-button" *ngIf="stage>=10">
                 <button mat-raised-button color="primary" (click)="this.gotRanking.emit(true);">
                     <h1>
-                        {{culture === 'jewish' ? 'אני מרוצה' : 'استمر'}}
+                        {{culture === 'jewish' ? 'אני מרוצה' : this.isMale ? 'استمر' : 'استمري'}}
                     </h1>
                 </button>
             </div>
