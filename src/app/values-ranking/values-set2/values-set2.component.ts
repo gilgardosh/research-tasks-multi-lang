@@ -41,7 +41,7 @@ export class ValuesSet2Component implements OnInit {
     if (this.culture === 'jewish') {
       this.subtitle = `כל הכבוד!<br>עכשיו נשחק שוב את המשחק עם תמונות אחרות.<br>נעבור על התמונות אחת - אחת`;
       this.audioService.setAudio(
-        `../../assets/values-ranking/values_aud/opening2-${this.dataService.gender}.wav`
+        `../../assets/values-ranking/values_aud/heb/opening2-${this.dataService.gender}.wav`
       );
 
       this.audioService.getTimeElapsed().subscribe((res) => {

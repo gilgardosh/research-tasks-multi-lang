@@ -14,9 +14,9 @@ export class DataService {
   };
   pbvs2: Pbvs = {
     valNum: 2,
-    text: '',
+    text: 'להצליח יותר מאחרים',
     imgLink: 'val2.png',
-    audioLink: '',
+    audioLink: 'val2.mp3',
     rank: null,
     isStock: true,
   };
@@ -24,7 +24,7 @@ export class DataService {
     valNum: 6,
     text: 'להנות מהחיים',
     imgLink: 'val6.png',
-    audioLink: 'val6.wav',
+    audioLink: 'val6.mp3',
     rank: null,
     isStock: true,
   };
@@ -32,23 +32,23 @@ export class DataService {
     valNum: 7,
     text: 'לעשות דברים מרגשים',
     imgLink: 'val7.png',
-    audioLink: 'val7.wav',
+    audioLink: 'val7.mp3',
     rank: null,
     isStock: true,
   };
   pbvs5: Pbvs = {
     valNum: 8,
-    text: 'לגלות דברים חדשים',
+    text: 'ללמוד לבד דברים חדשים',
     imgLink: 'val8.png',
-    audioLink: 'val8.wav',
+    audioLink: 'val8.mp3',
     rank: null,
     isStock: true,
   };
   pbvs6: Pbvs = {
     valNum: 1,
-    text: 'לשמור על הבטיחות',
+    text: 'לשמור על עצמי',
     imgLink: 'val1.png',
-    audioLink: 'val1.wav',
+    audioLink: 'val1.mp3',
     rank: null,
     isStock: true,
   };
@@ -56,15 +56,15 @@ export class DataService {
     valNum: 0,
     text: 'לשמור על החוקים',
     imgLink: 'val0.png',
-    audioLink: 'val0.wav',
+    audioLink: 'val0.mp3',
     rank: null,
     isStock: true,
   };
   pbvs8: Pbvs = {
     valNum: 4,
-    text: 'לשמור על המסורת',
+    text: 'להתפלל לאלוהים',
     imgLink: 'val4.png',
-    audioLink: 'val4.wav',
+    audioLink: 'val4.mp3',
     rank: null,
     isStock: true,
   };
@@ -72,15 +72,15 @@ export class DataService {
     valNum: 5,
     text: 'לעזור לאחרים',
     imgLink: 'val5.png',
-    audioLink: 'val5.wav',
+    audioLink: 'val5.mp3',
     rank: null,
     isStock: true,
   };
   pbvs10: Pbvs = {
     valNum: 9,
-    text: '',
+    text: 'להתחבר עם ילדים זרים',
     imgLink: 'val9.png',
-    audioLink: '',
+    audioLink: 'val9.mp3',
     rank: null,
     isStock: true,
   };
@@ -104,7 +104,7 @@ export class DataService {
     valNum: 11,
     text: 'לעשות חיים',
     imgLink: 'val11.png',
-    audioLink: 'val11.wav',
+    audioLink: 'val11.mp3',
     rank: null,
     isStock: true,
   };
@@ -112,7 +112,7 @@ export class DataService {
     valNum: 13,
     text: 'לצאת להרפתקאות',
     imgLink: 'val13.png',
-    audioLink: 'val13.wav',
+    audioLink: 'val13.mp3',
     rank: null,
     isStock: true,
   };
@@ -120,7 +120,7 @@ export class DataService {
     valNum: 14,
     text: 'להפעיל את הדמיון',
     imgLink: 'val14.png',
-    audioLink: 'val14.wav',
+    audioLink: 'val14.mp3',
     rank: null,
     isStock: true,
   };
@@ -136,7 +136,7 @@ export class DataService {
     valNum: 15,
     text: 'להיות כמו כולם',
     imgLink: 'val15.png',
-    audioLink: 'val15.wav',
+    audioLink: 'val15.mp3',
     rank: null,
     isStock: true,
   };
@@ -144,7 +144,7 @@ export class DataService {
     valNum: 19,
     text: 'ללמוד על מה שהיה פעם מזמן',
     imgLink: 'val19.png',
-    audioLink: 'val19.wav',
+    audioLink: 'val19.mp3',
     rank: null,
     isStock: true,
   };
@@ -152,7 +152,7 @@ export class DataService {
     valNum: 16,
     text: 'לשמח אחרים',
     imgLink: 'val16.png',
-    audioLink: 'val16.wav',
+    audioLink: 'val16.mp3',
     rank: null,
     isStock: true,
   };
@@ -160,7 +160,7 @@ export class DataService {
     valNum: 17,
     text: 'לשמור על הטבע',
     imgLink: 'val17.png',
-    audioLink: 'val17.wav',
+    audioLink: 'val17.mp3',
     rank: null,
     isStock: true,
   };
@@ -170,23 +170,16 @@ export class DataService {
   setGender(gender: 'M' | 'F') {
     this.gender = gender;
     this.pbvs1.text =
-      gender === 'M' ? 'להיות עשיר ועם כוח' : 'להיות עשירה ועם כוח';
-    this.pbvs1.audioLink = `val3-${gender}.wav`;
-    this.pbvs2.text = gender === 'M' ? 'להיות הכי טוב' : 'להיות הכי טובה';
-    this.pbvs2.audioLink = `val2-${gender}.wav`;
-    this.pbvs10.text =
-      gender === 'M'
-        ? 'להיות חבר של ילדים מכל הסוגים'
-        : 'להיות חברה של ילדים מכל הסוגים';
-    this.pbvs10.audioLink = `val9-${gender}.wav`;
+      gender === 'M' ? 'להיות עשיר וחזק' : 'להיות עשירה וחזקה';
+    this.pbvs1.audioLink = `val3-${gender}.mp3`;
     this.pbvs11.text = gender === 'M' ? 'להיות המנהיג' : 'להיות המנהיגה';
-    this.pbvs11.audioLink = `val12-${gender}.wav`;
+    this.pbvs11.audioLink = `val12-${gender}.mp3`;
     this.pbvs12.text =
-      gender === 'M' ? 'להראות לכולם מה אני יכול' : 'להראות לכולם מה אני יכולה';
-    this.pbvs12.audioLink = `val10-${gender}.wav`;
+      gender === 'M' ? 'להראות לכולם מה אני יכול לעשות' : 'להראות לכולם מה אני יכולה לעשות';
+    this.pbvs12.audioLink = `val10-${gender}.mp3`;
     this.pbvs16.text =
       gender === 'M' ? 'להיות מוגן ובטוח' : 'להיות מוגנת ובטוחה';
-    this.pbvs16.audioLink = `val18-${gender}.wav`;
+    this.pbvs16.audioLink = `val18-${gender}.mp3`;
   }
 
   setCulture(culture: 'jewish' | 'druze' | 'christian' | 'muslim') {
