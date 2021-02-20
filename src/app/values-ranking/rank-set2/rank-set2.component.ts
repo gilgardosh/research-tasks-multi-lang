@@ -89,7 +89,7 @@ export class RankSet2Component implements OnInit, OnDestroy {
   stepback() {
     // this.calculating = true;
     this.unsubscribe(this.playerSubscription$);
-    this.audioService.pauseAudio();
+    this.audioService.setAudio(null);
     this.stage -= 1;
     while (this.stage >= 7) {
       this.orderedValues[this.valuesStages[this.stage - 1]].isStock = true;
@@ -115,7 +115,6 @@ export class RankSet2Component implements OnInit, OnDestroy {
   }
 
   valueConfirmed(val: Pbvs) {
-    console.log(val);
     this.calculating = true;
     this.stage += 1;
     this.playSound();
@@ -127,7 +126,8 @@ export class RankSet2Component implements OnInit, OnDestroy {
       // inner delated func
       const stage7 = () => {
         this.playerSubscription$ = subscription.subscribe((res) => {
-          if (res === 'ended') {
+          if (['ended', 'paused'].includes(res)) {
+            this.playerSubscription$.unsubscribe();
             for (let i = 11; i <= 20; i++) {
               if (this.dataService['pbvs' + i].isStock) {
                 const value = this.dataService['pbvs' + i];
@@ -233,12 +233,12 @@ export class RankSet2Component implements OnInit, OnDestroy {
       case 1: {
         this.title = titles(1);
         this.audioService.setAudio(createSoundLink(1));
+        this.calculating = false;
         this.playerSubscription$ = this.audioService
           .getPlayerStatus()
           .subscribe((res) => {
             clearTimeout(this.idleTimer);
             if (res === 'ended') {
-              this.calculating = false;
               this.playerSubscription$.unsubscribe();
               this.idleTimer = setTimeout(() => {
                 if (this.stage === 1) {
@@ -278,7 +278,7 @@ export class RankSet2Component implements OnInit, OnDestroy {
               this.calculating = false;
               this.playerSubscription$.unsubscribe();
               this.idleTimer = setTimeout(() => {
-                if (this.stage === 3) {
+                if (this.stage === 3 || this.stage === 4) {
                   this.playSound();
                 }
               }, 7000);
@@ -299,7 +299,7 @@ export class RankSet2Component implements OnInit, OnDestroy {
               this.calculating = false;
               this.playerSubscription$.unsubscribe();
               this.idleTimer = setTimeout(() => {
-                if (this.stage === 4) {
+                if (this.stage === 5 || this.stage === 6) {
                   this.playSound();
                 }
               }, 7000);
@@ -313,20 +313,6 @@ export class RankSet2Component implements OnInit, OnDestroy {
       case 7: {
         this.title = titles(5);
         this.audioService.setAudio(createSoundLink(5));
-        this.playerSubscription$ = this.audioService
-          .getPlayerStatus()
-          .subscribe((res) => {
-            clearTimeout(this.idleTimer);
-            if (res === 'ended') {
-              this.calculating = false;
-              this.playerSubscription$.unsubscribe();
-              this.idleTimer = setTimeout(() => {
-                if (this.stage === 5) {
-                  this.playSound();
-                }
-              }, 7000);
-            }
-          });
         break;
       }
       default: {

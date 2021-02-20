@@ -76,7 +76,7 @@ export class RankSet1Component implements OnInit, OnDestroy {
   }
 
   nextStage() {
-    this.unsubscribe(this.playerSubscription$)
+    this.unsubscribe(this.playerSubscription$);
     this.calculating = true;
     this.playSound();
   }
@@ -89,7 +89,7 @@ export class RankSet1Component implements OnInit, OnDestroy {
 
   stepback() {
     this.unsubscribe(this.playerSubscription$);
-    this.audioService.pauseAudio();
+    this.audioService.setAudio(null);
     this.stage -= 1;
     while (this.stage >= 7) {
       this.stage -= 1;
@@ -121,12 +121,14 @@ export class RankSet1Component implements OnInit, OnDestroy {
     val.isStock = false;
     this.orderedValues[this.valuesStages[this.stage - 2]] = val;
     val.rank = this.getRank(this.valuesStages[this.stage - 2]);
+    const subscription = this.audioService.getPlayerStatus();
     if (this.stage >= 7) {
-      const subscription = this.audioService.getPlayerStatus();
+      
       // inner delated func
       const stage7 = () => {
         this.playerSubscription$ = subscription.subscribe((res) => {
-          if (res === 'ended') {
+          if (['ended', 'paused'].includes(res)) {
+            this.playerSubscription$.unsubscribe();
             for (let i = 1; i <= 10; i++) {
               if (this.dataService['pbvs' + i].isStock) {
                 const value = this.dataService['pbvs' + i];
@@ -143,7 +145,15 @@ export class RankSet1Component implements OnInit, OnDestroy {
       };
       setTimeout(stage7, 1000);
     } else {
-      this.calculating = false;
+      if ([4, 6].includes(this.stage)) {
+        this.calculating = false;
+      } else {
+        this.playerSubscription$ = subscription.subscribe((res) => {
+          if (res === 'ended') {
+            this.calculating = false;
+          }
+        });
+      }
     }
   }
 
@@ -276,7 +286,7 @@ export class RankSet1Component implements OnInit, OnDestroy {
               this.calculating = false;
               this.playerSubscription$.unsubscribe();
               this.idleTimer = setTimeout(() => {
-                if (this.stage === 3) {
+                if (this.stage === 3 || this.stage === 4) {
                   this.playSound();
                 }
               }, 7000);
@@ -297,7 +307,7 @@ export class RankSet1Component implements OnInit, OnDestroy {
               this.calculating = false;
               this.playerSubscription$.unsubscribe();
               this.idleTimer = setTimeout(() => {
-                if (this.stage === 4) {
+                if (this.stage === 5 || this.stage === 6) {
                   this.playSound();
                 }
               }, 7000);
@@ -311,20 +321,6 @@ export class RankSet1Component implements OnInit, OnDestroy {
       case 7: {
         this.title = titles(5);
         this.audioService.setAudio(createSoundLink(5));
-        this.playerSubscription$ = this.audioService
-          .getPlayerStatus()
-          .subscribe((res) => {
-            clearTimeout(this.idleTimer);
-            if (res === 'ended') {
-              this.calculating = false;
-              this.playerSubscription$.unsubscribe();
-              this.idleTimer = setTimeout(() => {
-                if (this.stage === 5) {
-                  this.playSound();
-                }
-              }, 7000);
-            }
-          });
         break;
       }
       default: {
@@ -363,8 +359,8 @@ export class RankSet1Component implements OnInit, OnDestroy {
   getImgLink(num: number) {
     return `../../assets/values-ranking/values_img/val${num}.png`;
   }
-  
+
   nextScene() {
-    this.gotRanking.emit(true)
+    this.gotRanking.emit(true);
   }
 }
