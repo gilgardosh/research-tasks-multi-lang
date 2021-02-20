@@ -183,6 +183,7 @@ export class DataService {
   }
 
   setCulture(culture: 'jewish' | 'druze' | 'christian' | 'muslim') {
+    this.culture = culture;
     this.pbvs8.imgLink = `val4${culture}.png`
     this.pbvs9.imgLink = `val5${culture === 'jewish' ? 'jewish' : 'arab'}.png`
     if (culture !== 'jewish') {

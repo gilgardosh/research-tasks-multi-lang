@@ -7,7 +7,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Pbvs } from 'src/app/shared/services/data.service';
+import { Subscription } from 'rxjs';
+import { AudioService } from 'src/app/shared/services/audio.service';
+import { DataService, Pbvs } from 'src/app/shared/services/data.service';
 
 @Component({
   selector: 'app-value-dialog',
@@ -25,24 +27,49 @@ export class ValueDialogComponent implements OnInit {
   };
   @Output() clicked: EventEmitter<Pbvs> = new EventEmitter();
   value: Pbvs;
+  $audio: Subscription;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    public dialog: MatDialog,
+    private audioService: AudioService,
+    public dataService: DataService
+  ) {}
 
   ngOnInit() {}
 
   public open(value: Pbvs) {
     this.value = value;
-    console.log(value.text);
     this.ref = this.dialog.open(this.template, this.config);
+    console.log(this.dataService.culture);
+
+    this.audioService.setAudio(
+      `../../assets/values-ranking/values_aud/${
+        this.dataService.culture === 'jewish' ? 'heb' : 'arab'
+      }/chosen-${this.dataService.gender}.mp3`
+    );
+    setTimeout(() => {
+      this.$audio = this.audioService.getPlayerStatus().subscribe((res) => {
+        if (res === 'ended') {
+          this.$audio.unsubscribe();
+          this.audioService.setAudio(
+            `../../assets/values-ranking/values_aud/${
+              this.dataService.culture === 'jewish' ? 'heb' : 'arab'
+            }/${value.audioLink}`
+          );
+        }
+      });
+    }, 400);
   }
 
   confirm() {
     this.clicked.emit(this.value);
+    this.$audio.unsubscribe();
     this.close();
   }
 
   cancel() {
     this.clicked.emit(null);
+    this.$audio.unsubscribe();
     this.close();
   }
 
