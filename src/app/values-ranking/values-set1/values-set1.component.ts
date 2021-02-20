@@ -310,7 +310,7 @@ export class ValuesSet1Component implements OnInit {
       case 0: {
         this.subtitle = `سننطلق الآن في رحلة خيالية،<br>
         رحلة حول الأشياء المهمة بالنسبة لك في الحياة،<br>
-        مثل: ما هي أهدافكِ؟ وكيف تريدين أن تكوني في المستقبل؟`;
+        مثل: ما هي أهدافك؟ وكيف تريد أن تكون في المستقبل؟`;
         break;
       }
       case 1: {
@@ -358,8 +358,7 @@ export class ValuesSet1Component implements OnInit {
         break;
       }
       case 11: {
-        this.subtitle =
-          'من الممكن أن تجد فيها الفتى الذي تريد أن تكون مثله';
+        this.subtitle = 'من الممكن أن تجد فيها الفتى الذي تريد أن تكون مثله';
         break;
       }
       case 12: {
@@ -385,15 +384,13 @@ export class ValuesSet1Component implements OnInit {
       `../../assets/values-ranking/values_aud/arab/M/${subStage + 1}.mp3`
     );
     setTimeout(() => {
-      this.$audio = this.audioService
-        .getPlayerStatus()
-        .subscribe((res) => {
-          if (res === 'ended') {
-            this.$audio.unsubscribe();
-            subStage += 1;
-            this.openingArabMale(subStage);
-          }
-        });
+      this.$audio = this.audioService.getPlayerStatus().subscribe((res) => {
+        if (res === 'ended') {
+          this.$audio.unsubscribe();
+          subStage += 1;
+          this.openingArabMale(subStage);
+        }
+      });
     }, 500);
   }
 
@@ -477,15 +474,13 @@ export class ValuesSet1Component implements OnInit {
       `../../assets/values-ranking/values_aud/arab/F/${subStage + 1}.mp3`
     );
     setTimeout(() => {
-      this.$audio = this.audioService
-        .getPlayerStatus()
-        .subscribe((res) => {
-          if (res === 'ended') {
-            this.$audio.unsubscribe();
-            subStage += 1;
-            this.openingArabFemale(subStage);
-          }
-        });
+      this.$audio = this.audioService.getPlayerStatus().subscribe((res) => {
+        if (res === 'ended') {
+          this.$audio.unsubscribe();
+          subStage += 1;
+          this.openingArabFemale(subStage);
+        }
+      });
     }, 500);
   }
 }
