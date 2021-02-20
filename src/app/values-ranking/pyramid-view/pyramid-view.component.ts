@@ -8,7 +8,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Pbvs } from 'src/app/shared/services/data.service';
+import { AudioService } from 'src/app/shared/services/audio.service';
+import { DataService, Pbvs } from 'src/app/shared/services/data.service';
 
 @Component({
   selector: 'app-pyramid-view',
@@ -55,7 +56,11 @@ export class PyramidViewComponent implements OnInit {
   @Output() clicked: EventEmitter<boolean> = new EventEmitter();
   value: Pbvs;
 
-  constructor(public dialog: MatDialog) {
+  constructor(
+    public dialog: MatDialog,
+    private audioService: AudioService,
+    public dataService: DataService
+  ) {
     this.values = {
       veryvery: null,
       very1: null,
@@ -86,6 +91,11 @@ export class PyramidViewComponent implements OnInit {
   }) {
     this.values = values;
     this.ref = this.dialog.open(this.template, this.config);
+    this.audioService.setAudio(
+      `../../assets/values-ranking/values_aud/${
+        this.dataService.culture === 'jewish' ? 'heb' : 'arab'
+      }/check-${this.dataService.gender}.mp3`
+    );
   }
 
   confirm() {

@@ -40,8 +40,6 @@ export class ValueDialogComponent implements OnInit {
   public open(value: Pbvs) {
     this.value = value;
     this.ref = this.dialog.open(this.template, this.config);
-    console.log(this.dataService.culture);
-
     this.audioService.setAudio(
       `../../assets/values-ranking/values_aud/${
         this.dataService.culture === 'jewish' ? 'heb' : 'arab'
