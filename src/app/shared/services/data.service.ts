@@ -54,7 +54,7 @@ export class DataService {
   };
   pbvs7: Pbvs = {
     valNum: 0,
-    text: 'לשמור על החוקים',
+    text: 'לשמור על הכללים',
     imgLink: 'val0.png',
     audioLink: 'val0.mp3',
     rank: null,
@@ -78,7 +78,7 @@ export class DataService {
   };
   pbvs10: Pbvs = {
     valNum: 9,
-    text: 'להתחבר עם ילדים זרים',
+    text: 'להיות חבר של ילדים מכל הסוגים',
     imgLink: 'val9.png',
     audioLink: 'val9.mp3',
     rank: null,
@@ -172,6 +172,8 @@ export class DataService {
     this.pbvs1.text =
       gender === 'M' ? 'להיות עשיר וחזק' : 'להיות עשירה וחזקה';
     this.pbvs1.audioLink = `val3-${gender}.mp3`;
+    this.pbvs10.text = gender === 'M' ? 'להיות חבר של ילדים מכל הסוגים' : 'להיות חברה של ילדים מכל הסוגים';
+    this.pbvs10.audioLink = `val9-${gender}.mp3`;
     this.pbvs11.text = gender === 'M' ? 'להיות המנהיג' : 'להיות המנהיגה';
     this.pbvs11.audioLink = `val12-${gender}.mp3`;
     this.pbvs12.text =
