@@ -305,6 +305,7 @@ export class RankSet2Component implements OnInit, OnDestroy {
       }
       case 4: {
         this.title = titles(3);
+        this.calculating = false;
         break;
       }
       case 5: {
@@ -326,6 +327,7 @@ export class RankSet2Component implements OnInit, OnDestroy {
       }
       case 6: {
         this.title = titles(4);
+        this.calculating = false;
         break;
       }
       case 7: {
@@ -340,40 +342,50 @@ export class RankSet2Component implements OnInit, OnDestroy {
   }
 
   getRank(rank: string) {
-    let renkVal: number;
+    let rankVal: number;
     switch (rank) {
       case 'veryvery': {
-        renkVal = 5;
+        rankVal = 5;
         break;
       }
-      case 'very2' || 'very1': {
-        renkVal = 4;
+      case 'very1': {
+        rankVal = 4;
         break;
       }
-      case 'not2' || 'not1': {
-        renkVal = 2;
+      case 'very2': {
+        rankVal = 4;
+        break;
+      }
+      case 'not1': {
+        rankVal = 2;
+        break;
+      }
+      case 'not2': {
+        rankVal = 2;
         break;
       }
       case 'notnot': {
-        renkVal = 1;
+        rankVal = 1;
         break;
       }
-      case 'average4' || 'average3' || 'average2' || 'average1': {
-        renkVal = 3;
+      case 'average1': {
+      }
+      case 'average2': {
+      }
+      case 'average3': {
+      }
+      case 'average4': {
+        rankVal = 3;
         break;
       }
     }
-    return renkVal;
+    return rankVal;
   }
 
   updateValuesFromCache() {
-    console.log('123');
-
     for (let i = 11; i <= 20; i++) {
       const value = this.dataService['pbvs' + i];
       if (value.rank !== null) {
-        console.log(value);
-
         switch (value.rank) {
           case 5:
             this.orderedValues.veryvery = value;
