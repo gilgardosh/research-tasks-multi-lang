@@ -9,6 +9,8 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AudioService } from 'src/app/shared/services/audio.service';
+import { CacheService } from 'src/app/shared/services/cache.service';
+import { getCacheData, getCacheKey } from 'src/app/shared/utils';
 import { Pbvs, DataService } from '../../shared/services/data.service';
 import { PyramidViewComponent } from '../pyramid-view/pyramid-view.component';
 import { ValueDialogComponent } from '../value-dialog/value-dialog.component';
@@ -62,8 +64,14 @@ export class RankSet1Component implements OnInit, OnDestroy {
 
   constructor(
     private audioService: AudioService,
-    public dataService: DataService
-  ) {}
+    public dataService: DataService,
+    private cacheService: CacheService
+  ) {
+    this.stage = this.dataService.currentStage;
+    if (this.stage > 1) {
+      this.updateValuesFromCache();
+    }
+  }
 
   ngOnInit(): void {
     this.isMale = this.dataService.gender === 'M';
@@ -78,6 +86,13 @@ export class RankSet1Component implements OnInit, OnDestroy {
   nextStage() {
     this.unsubscribe(this.playerSubscription$);
     this.calculating = true;
+    this.dataService.currentStage = this.stage;
+    this.cacheService.save({
+      key: getCacheKey(this.dataService.schoolID, this.dataService.childID),
+      data: getCacheData(this.dataService),
+    });
+    console.log('cache updated. stage:', this.dataService.currentStage);
+
     this.playSound();
   }
 
@@ -117,13 +132,12 @@ export class RankSet1Component implements OnInit, OnDestroy {
     console.log(val);
     this.calculating = true;
     this.stage += 1;
-    this.nextStage();
     val.isStock = false;
     this.orderedValues[this.valuesStages[this.stage - 2]] = val;
     val.rank = this.getRank(this.valuesStages[this.stage - 2]);
+    this.nextStage();
     const subscription = this.audioService.getPlayerStatus();
     if (this.stage >= 7) {
-      
       // inner delated func
       const stage7 = () => {
         this.playerSubscription$ = subscription.subscribe((res) => {
@@ -354,6 +368,51 @@ export class RankSet1Component implements OnInit, OnDestroy {
       }
     }
     return renkVal;
+  }
+
+  updateValuesFromCache() {
+    console.log('123');
+
+    for (let i = 1; i <= 10; i++) {
+      const value = this.dataService['pbvs' + i];
+      if (value.rank !== null) {
+        console.log(value);
+
+        switch (value.rank) {
+          case 5:
+            this.orderedValues.veryvery = value;
+            break;
+          case 4:
+            if (this.orderedValues.very1 === null) {
+              this.orderedValues.very1 = value;
+            } else {
+              this.orderedValues.very2 = value;
+            }
+            break;
+          case 3:
+            if (this.orderedValues.average1 === null) {
+              this.orderedValues.average1 = value;
+            } else if (this.orderedValues.average2 === null) {
+              this.orderedValues.average2 = value;
+            } else if (this.orderedValues.average3 === null) {
+              this.orderedValues.average3 = value;
+            } else {
+              this.orderedValues.average4 = value;
+            }
+            break;
+          case 2:
+            if (this.orderedValues.not1 === null) {
+              this.orderedValues.not1 = value;
+            } else {
+              this.orderedValues.not2 = value;
+            }
+            break;
+          case 1:
+            this.orderedValues.notnot = value;
+            break;
+        }
+      }
+    }
   }
 
   getImgLink(num: number) {

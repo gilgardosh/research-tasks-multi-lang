@@ -1,14 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CacheService } from 'src/app/shared/services/cache.service';
 import { Credentials } from '../models';
 import { ApplicationStateService } from '../shared/services/application-state.service';
 import { DataService } from '../shared/services/data.service';
+import { getCacheData, getCacheKey } from '../shared/utils';
 
 @Component({
   selector: 'app-values-ranking',
   templateUrl: './values-ranking.component.html',
   styleUrls: ['./values-ranking.component.scss'],
+  providers: [CacheService],
 })
 export class ValuesRankingComponent implements OnInit {
   /**
@@ -27,6 +30,7 @@ export class ValuesRankingComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
+    private cacheService: CacheService,
     private http: HttpClient,
     private route: ActivatedRoute,
     public applicationStateService: ApplicationStateService
@@ -68,28 +72,62 @@ export class ValuesRankingComponent implements OnInit {
   }
 
   scene1(creds: Credentials) {
-    this.dataService.schoolID = creds.schoolID;
-    this.dataService.childID = creds.childID;
-    this.dataService.setGender(creds.gender);
-    this.dataService.setCulture(this.culture);
-    this.scene = 2;
+    this.dataService.currentStage = 1;
+    const prevData = this.cacheService.load(
+      getCacheKey(creds.schoolID, creds.childID)
+    );
+    if (prevData) {
+      Object.assign(this.dataService, prevData.data);
+      this.dataService.setGender(creds.gender);
+      this.dataService.setCulture(this.culture);
+      this.scene = prevData.scene;
+    } else {
+      this.dataService.setGender(creds.gender);
+      this.dataService.setCulture(this.culture);
+      this.dataService.schoolID = creds.schoolID;
+      this.dataService.childID = creds.childID;
+      this.scene = 2;
+    }
+    this.dataService.currentScene = this.scene;
+    this.cacheService.save({
+      key: getCacheKey(creds.schoolID, creds.childID),
+      data: getCacheData(this.dataService),
+    });
   }
 
   scene2(endFlag: boolean) {
     if (endFlag) {
+      this.dataService.currentStage = 1;
       this.scene = 3;
+      this.dataService.currentScene = this.scene;
     }
+    this.cacheService.save({
+      key: getCacheKey(this.dataService.schoolID, this.dataService.childID),
+      data: getCacheData(this.dataService),
+    });
   }
 
   scene3(endFlag: boolean) {
     if (endFlag) {
+      this.dataService.currentStage = 1;
       this.scene = 4;
+      this.dataService.currentScene = this.scene;
+      this.cacheService.save({
+        key: getCacheKey(this.dataService.schoolID, this.dataService.childID),
+        data: getCacheData(this.dataService),
+      });
     }
   }
 
   scene4(endFlag: boolean) {
     if (endFlag) {
+      this.dataService.currentStage = 1;
       this.scene = 5;
+      this.dataService.currentScene = this.scene;
+      this.cacheService.save({
+        key: getCacheKey(this.dataService.schoolID, this.dataService.childID),
+        data: getCacheData(this.dataService),
+      });
     }
   }
 
@@ -97,6 +135,11 @@ export class ValuesRankingComponent implements OnInit {
     if (endFlag) {
       this.calculateData();
       this.scene = 6;
+      this.dataService.currentScene = this.scene;
+      this.cacheService.save({
+        key: getCacheKey(this.dataService.schoolID, this.dataService.childID),
+        data: getCacheData(this.dataService),
+      });
     }
   }
   calculateData() {
