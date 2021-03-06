@@ -52,6 +52,17 @@
   cursor: pointer;
 }
 
+.text {
+  padding-left: 1vw;
+  padding-right: 1vw;
+  max-width: 11.5vw;
+  align-self: flex-start;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .stock-img {
   height: 18vh;
   width: 11vw;

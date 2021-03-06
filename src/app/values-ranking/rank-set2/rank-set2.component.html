@@ -1,6 +1,7 @@
 <div class="containter" *ngIf="stage<=11">
     <app-value-dialog #valueDialog (clicked)="$event == null ? playSound() : valueConfirmed($event)"></app-value-dialog>
-    <app-pyramid-view #pyramidView [setValues]="orderedValues" [culture]="culture" (clicked)="$event ? nextScene() : stepback()" ></app-pyramid-view>
+    <app-pyramid-view #pyramidView [setValues]="orderedValues" [culture]="culture"
+        (clicked)="$event ? nextScene() : stepback()"></app-pyramid-view>
     <div class="values-container">
         <div class="pyramid-container">
             <table class="pyramid-table">
@@ -13,9 +14,9 @@
                             <div class="pyramid-cell-data" *ngIf="orderedValues.veryvery != null">
                                 <img class="pyramid-img"
                                     [src]="'../../assets/values-ranking/values_img/'+orderedValues.veryvery.imgLink">
-                                <p class="pyramid-text">
+                                <div class="text">
                                     {{orderedValues.veryvery.text}}
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -29,9 +30,9 @@
                             <div class="pyramid-cell-data" *ngIf="orderedValues.very2 != null">
                                 <img class="pyramid-img"
                                     [src]="'../../assets/values-ranking/values_img/'+orderedValues.very2.imgLink">
-                                <p class="pyramid-text">
+                                <div class="text">
                                     {{orderedValues.very2.text}}
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -40,9 +41,9 @@
                             <div class="pyramid-cell-data" *ngIf="orderedValues.very1 != null">
                                 <img class="pyramid-img"
                                     [src]="'../../assets/values-ranking/values_img/'+orderedValues.very1.imgLink">
-                                <p class="pyramid-text">
+                                <div class="text">
                                     {{orderedValues.very1.text}}
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -55,9 +56,9 @@
                             <div class="pyramid-cell-data" *ngIf="orderedValues.average4 != null">
                                 <img class="pyramid-img"
                                     [src]="'../../assets/values-ranking/values_img/'+orderedValues.average4.imgLink">
-                                <p class="pyramid-text">
+                                <div class="text">
                                     {{orderedValues.average4.text}}
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -66,9 +67,9 @@
                             <div class="pyramid-cell-data" *ngIf="orderedValues.average3 != null">
                                 <img class="pyramid-img"
                                     [src]="'../../assets/values-ranking/values_img/'+orderedValues.average3.imgLink">
-                                <p class="pyramid-text">
+                                <div class="text">
                                     {{orderedValues.average3.text}}
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -77,9 +78,9 @@
                             <div class="pyramid-cell-data" *ngIf="orderedValues.average2 != null">
                                 <img class="pyramid-img"
                                     [src]="'../../assets/values-ranking/values_img/'+orderedValues.average2.imgLink">
-                                <p class="pyramid-text">
+                                <div class="text">
                                     {{orderedValues.average2.text}}
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -88,9 +89,9 @@
                             <div class="pyramid-cell-data" *ngIf="orderedValues.average1 != null">
                                 <img class="pyramid-img"
                                     [src]="'../../assets/values-ranking/values_img/'+orderedValues.average1.imgLink">
-                                <p class="pyramid-text">
+                                <div class="text">
                                     {{orderedValues.average1.text}}
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -103,9 +104,9 @@
                             <div class="pyramid-cell-data" *ngIf="orderedValues.not2 != null">
                                 <img class="pyramid-img"
                                     [src]="'../../assets/values-ranking/values_img/'+orderedValues.not2.imgLink">
-                                <p class="pyramid-text">
+                                <div class="text">
                                     {{orderedValues.not2.text}}
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -114,9 +115,9 @@
                             <div class="pyramid-cell-data" *ngIf="orderedValues.not1 != null">
                                 <img class="pyramid-img"
                                     [src]="'../../assets/values-ranking/values_img/'+orderedValues.not1.imgLink">
-                                <p class="pyramid-text">
+                                <div class="text">
                                     {{orderedValues.not1.text}}
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -132,9 +133,9 @@
                             <div class="pyramid-cell-data" *ngIf="orderedValues.notnot != null">
                                 <img class="pyramid-img"
                                     [src]="'../../assets/values-ranking/values_img/'+orderedValues.notnot.imgLink">
-                                <p class="pyramid-text">
+                                <div class="text">
                                     {{orderedValues.notnot.text}}
-                                </p>
+                                </div>
                             </div>
 
                         </div>
@@ -165,9 +166,9 @@
                             (click)="valueClick(dataService.pbvs17)">
                             <img class="stock-img"
                                 [src]="'../../assets/values-ranking/values_img/'+dataService.pbvs17.imgLink">
-                            <p>
+                            <div class="text">
                                 {{dataService.pbvs17.text}}
-                            </p>
+                            </div>
                         </mat-card>
                     </td>
                     <td class="stock-cell">
@@ -175,9 +176,9 @@
                             (click)="valueClick(dataService.pbvs16)">
                             <img class="stock-img"
                                 [src]="'../../assets/values-ranking/values_img/'+dataService.pbvs16.imgLink">
-                            <p>
+                            <div class="text">
                                 {{dataService.pbvs16.text}}
-                            </p>
+                            </div>
                         </mat-card>
                     </td>
                     <td class="stock-cell">
@@ -185,9 +186,9 @@
                             (click)="valueClick(dataService.pbvs12)">
                             <img class="stock-img"
                                 [src]="'../../assets/values-ranking/values_img/'+dataService.pbvs12.imgLink">
-                            <p>
+                            <div class="text">
                                 {{dataService.pbvs12.text}}
-                            </p>
+                            </div>
                         </mat-card>
                     </td>
                     <td class="stock-cell">
@@ -195,9 +196,9 @@
                             (click)="valueClick(dataService.pbvs13)">
                             <img class="stock-img"
                                 [src]="'../../assets/values-ranking/values_img/'+dataService.pbvs13.imgLink">
-                            <p>
+                            <div class="text">
                                 {{dataService.pbvs13.text}}
-                            </p>
+                            </div>
                         </mat-card>
                     </td>
                 </tr>
@@ -207,9 +208,9 @@
                             (click)="valueClick(dataService.pbvs14)">
                             <img class="stock-img"
                                 [src]="'../../assets/values-ranking/values_img/'+dataService.pbvs14.imgLink">
-                            <p>
+                            <div class="text">
                                 {{dataService.pbvs14.text}}
-                            </p>
+                            </div>
                         </mat-card>
                     </td>
                     <td class="stock-cell">
@@ -217,9 +218,9 @@
                             (click)="valueClick(dataService.pbvs20)">
                             <img class="stock-img"
                                 [src]="'../../assets/values-ranking/values_img/'+dataService.pbvs20.imgLink">
-                            <p>
+                            <div class="text">
                                 {{dataService.pbvs20.text}}
-                            </p>
+                            </div>
                         </mat-card>
                     </td>
                     <td class="stock-cell">
@@ -227,9 +228,9 @@
                             (click)="valueClick(dataService.pbvs11)">
                             <img class="stock-img"
                                 [src]="'../../assets/values-ranking/values_img/'+dataService.pbvs11.imgLink">
-                            <p>
+                            <div class="text">
                                 {{dataService.pbvs11.text}}
-                            </p>
+                            </div>
                         </mat-card>
                     </td>
                     <td class="stock-cell">
@@ -237,9 +238,9 @@
                             (click)="valueClick(dataService.pbvs18)">
                             <img class="stock-img"
                                 [src]="'../../assets/values-ranking/values_img/'+dataService.pbvs18.imgLink">
-                            <p>
+                            <div class="text">
                                 {{dataService.pbvs18.text}}
-                            </p>
+                            </div>
                         </mat-card>
                     </td>
                 </tr>
@@ -255,9 +256,9 @@
                             (click)="valueClick(dataService.pbvs19)">
                             <img class="stock-img"
                                 [src]="'../../assets/values-ranking/values_img/'+dataService.pbvs19.imgLink">
-                            <p>
+                            <div class="text">
                                 {{dataService.pbvs19.text}}
-                            </p>
+                            </div>
                         </mat-card>
                     </td>
                     <td class="stock-cell">
@@ -265,9 +266,9 @@
                             (click)="valueClick(dataService.pbvs15)">
                             <img class="stock-img"
                                 [src]="'../../assets/values-ranking/values_img/'+dataService.pbvs15.imgLink">
-                            <p>
+                            <div class="text">
                                 {{dataService.pbvs15.text}}
-                            </p>
+                            </div>
                         </mat-card>
                     </td>
                 </tr>
