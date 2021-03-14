@@ -10,7 +10,7 @@ export class CacheService {
 
     // Set expiration date in miliseconds
     const expirationMS =
-      options.expirationMins !== 0 ? options.expirationMins * 60 * 1000 : 0;
+      options.expirationMins !== 0 ? options.expirationMins * 60 : 0;
 
     const record = {
       value:
