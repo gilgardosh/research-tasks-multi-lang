@@ -42,7 +42,23 @@ export class SummaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.randomView = Math.random() > 0.5;
-    this.ending(1);
+    this.explenation();
+  }
+
+  explenation() {
+    this.audioService.setAudio(
+      `../../assets/values-ranking/guidance_aud/${
+        this.culture === 'jewish' ? 'heb' : 'arab'
+      }/inst-end-explenation-${this.dataService.gender}.mp3`
+    );
+    setTimeout(() => {
+      this.$audio = this.audioService.getPlayerStatus().subscribe((res) => {
+        if (res === 'ended') {
+          this.$audio.unsubscribe();
+          this.ending(1);
+        }
+      });
+    }, 500);
   }
 
   ending(subStage: number) {
