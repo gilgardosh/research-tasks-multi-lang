@@ -54,6 +54,21 @@ export class ValueDialogComponent implements OnInit {
               this.dataService.culture === 'jewish' ? 'heb' : 'arab'
             }/${value.audioLink}`
           );
+          if (this.dataService.firstTimeV) {
+            this.dataService.firstTimeV = false;
+            setTimeout(() => {
+              this.$audio = this.audioService.getPlayerStatus().subscribe((res) => {
+                if (res === 'ended') {
+                  this.$audio.unsubscribe();
+                  this.audioService.setAudio(
+                    `../../assets/values-ranking/guidance_aud/${
+                      this.dataService.culture === 'jewish' ? 'heb' : 'arab'
+                    }/inst-v-explenation-${this.dataService.gender}.mp3`
+                  );
+                }
+              });
+            }, 400);
+          }
         }
       });
     }, 400);

@@ -167,6 +167,7 @@ export class BasicData {
 
   currentStage: number = 0;
   currentScene: number = 0;
+  firstTimeV = true;
 
   constructor() {}
 }
