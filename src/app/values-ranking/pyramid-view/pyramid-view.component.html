@@ -113,9 +113,14 @@
       </tr>
       <tr class="pyramid-row">
         <td style="width:37%">
-          <button mat-button color="warn" (click)="confirm()">
-            <mat-icon style="color: green">done</mat-icon>
-          </button>
+          <div>
+            <h1 style="text-align: center;">{{culture === 'jewish' ? 'כלל לא חשוב' : 'غير مهمّ أبدًا'}}</h1>
+          </div>
+          <div>
+            <button mat-button color="warn" (click)="confirm()">
+              <mat-icon style="color: green">done</mat-icon>
+            </button>
+          </div>
         </td>
         <td class="pyramid-cell">
           <div class="pyramid-square">
